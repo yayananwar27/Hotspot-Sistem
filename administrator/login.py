@@ -55,7 +55,6 @@ class LoginOperatorsAPI(MethodResource, Resource):
         
             #check dari db
             administrator_exists = administrator.query.filter_by(email=email).first()
-            print(administrator_exists.password)
 
             if administrator_exists is None:
                 print("Administrator Not Exists")
