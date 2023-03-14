@@ -70,7 +70,8 @@ class LoginOperatorsAPI(MethodResource, Resource):
             
             #ambil datetime dan generete tokennya
             dt_now = get_datetime()
-            _expaccess = int(dt_now.unix()+(60*60))
+            #_expaccess = int(dt_now.unix()+(60*60))
+            _expaccess = int(dt_now.unix()+(60*5))
             access_payload = {'admin_id' : administrator_exists.id, 'type':'access_token', 'expired':_expaccess, 'device':device}
             access_token = create_token(access_payload)
             access_token = access_token.get_token()
@@ -81,7 +82,8 @@ class LoginOperatorsAPI(MethodResource, Resource):
                 refresh_token = create_token(refresh_payload)
                 refresh_token = refresh_token.get_token()
             else:
-                _exprefresh = int(dt_now.unix()+(60*60*24))
+                #_exprefresh = int(dt_now.unix()+(60*60*24))
+                _exprefresh = int(dt_now.unix()+(60*10))
                 refresh_payload = {'admin_id' : administrator_exists.id, 'type':'refresh_token', 'expired':_exprefresh, 'device':device}
                 refresh_token = create_token(refresh_payload)
                 refresh_token = refresh_token.get_token()

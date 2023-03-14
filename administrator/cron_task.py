@@ -23,7 +23,7 @@ dt_now = get_datetime()
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
-@scheduler.scheduled_job('interval', id="expired_check_admin_token",  seconds=300, max_instances=1)
+@scheduler.scheduled_job('interval', id="expired_check_admin_token",  seconds=60, max_instances=1)
 def expired_token_admin_check():
     try:
         headers = {"Accept":"application/json","Content-Type": "application/json"}
