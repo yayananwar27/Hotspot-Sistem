@@ -15,3 +15,5 @@ authlib
 APScheduler
 flask-APScheduler
 requests
+gunicorn
+wheel
