@@ -46,9 +46,9 @@ def info_administrator():
     authorization = 'admin_access_token:'+token
     data = redcon.get(authorization).decode('utf-8')
     result = ast.literal_eval(data)
-    request_id = admin_token.query.filter.by(token_value=token).first()
+    request_id = admin_token.query.filter_by(token_value=token).first()
     result['request_id'] = request_id.request_id
-    return jsonify(result)
+    return result
 
 #User Schema
 class AdministratorSchema(Schema):
@@ -85,11 +85,11 @@ class RespAdministratorSchemaDelete(Schema):
 
 #Class CRUD Administrator
 class AdministratorAPI(MethodResource, Resource):
-    @doc(description='Create Administrator', tags=['Administrator'])
-    #@doc(description='Create Administrator', tags=['Administrator'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
+    #@doc(description='Create Administrator', tags=['Administrator'])
+    @doc(description='Create Administrator', tags=['Administrator'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(AdministratorSchemaCreate, location=('json'))
     @marshal_with(RespAdministratorSchemaCreate)
-    #@check_header
+    @check_header
     #Create Operator
     def post(self, **kwargs):
         try:
@@ -116,11 +116,11 @@ class AdministratorAPI(MethodResource, Resource):
                 }
 
             #Logging
-            #info_admin = info_administrator()
-            #accessed = {'ip':request.remote_addr, 'id_token':info_admin['request_id']}
-            #new_log = administrator_logging_create(accessed, str(data), data['id'], info_admin['admin_id'])
-            #if new_log == False:
-            #    print("Logging Failed")
+            info_admin = info_administrator()
+            accessed = {'ip':request.remote_addr, 'id_token': info_admin['admin_id']}
+            new_log = administrator_logging_create(str(accessed), str(data), data['id'], info_admin['admin_id'])
+            if new_log == False:
+                print("Logging Failed")
 
             return jsonify(data)
 
@@ -229,7 +229,7 @@ class AdministratorAPI(MethodResource, Resource):
             return respone
         
     @doc(description='Delete Administrator', tags=['Administrator'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
-    @use_kwargs(AdministratorSchema, location=('json'))
+    @use_kwargs(AdministratorSchemaDelete, location=('json'))
     @marshal_with(RespAdministratorSchemaCreate)
     @check_header
     def delete(self, **kwargs):
@@ -264,6 +264,31 @@ class AdministratorAPI(MethodResource, Resource):
             return jsonify({"message": "User Not exists"}), 404
 
 
+        except Exception as e:
+            print(e)
+            error = {"message":e}
+            respone = jsonify(error)
+            respone.status_code = 500
+            return respone
+
+#Class CRUD Administrator
+class InfoAdministratorAPI(MethodResource, Resource):
+    @doc(description='Administrato Info', tags=['Administrator'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
+    @marshal_with(AdministratorSchema)
+    @check_header
+    def get(self, id=0):
+        try:
+            administrators = administrator.query.filter_by(id=id).all()
+            
+            administrators = {
+                'id' : administrators.id,
+                'email' : administrators.email,
+                'fullname' : administrators.fullname,
+                'created_at' : administrators.created_at, 
+                'active':administrators.active
+            }
+            
+            return jsonify(administrator)
         except Exception as e:
             print(e)
             error = {"message":e}

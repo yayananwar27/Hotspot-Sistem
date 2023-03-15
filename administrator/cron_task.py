@@ -78,7 +78,10 @@ class CheckExpiredTokenAPI(MethodResource, Resource):
                 db_admin.session.delete(del_token)
                 db_admin.session.commit()
             
-            return jsonify({"message": "Success"}), 200
+            error = {"message":"success"}
+            respone = jsonify(error)
+            respone.status_code = 200
+            return respone
 
         except Exception as e:
             error = {"message":e}

@@ -24,11 +24,8 @@ def get_logid():
         id = admin_log.query.order_by(admin_log.id.desc()).first()
         id = id.id
         if id:
-            print("Hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
-            print(id)
             _id = int(id)
             _id = _id+1
-            print(_id)
             return _id
     except:
         return 1
@@ -102,7 +99,7 @@ class admin_token_old(db_admin.Model):
     request_id = db_admin.Column(db_admin.String(255), primary_key=True, unique=True)
     admin_id = db_admin.Column(db_admin.String(255), db_admin.ForeignKey('administrator.id', ondelete='CASCADE'), nullable=False)
     type_token = db_admin.Column(db_admin.String(100), nullable=False)
-    token_value = db_admin.Column(db_admin.Text, unique=True, nullable=False)
+    token_value = db_admin.Column(db_admin.Text, nullable=False)
     expired = db_admin.Column(db_admin.Integer, nullable=False)
     allowed_access = db_admin.Column(db_admin.Text, nullable=False)
     created_at = db_admin.Column(db_admin.DateTime)
@@ -159,12 +156,3 @@ class admin_log(db_admin.Model):
             "admin_id": self.admin_id
         }
         return data
-
-class admin_log_ref(admin_log):
-    def __init__(self, accessed, log_object, action, description, refrence_id, admin_id):
-        self.accessed = accessed
-        self.log_object = log_object
-        self.action = action
-        self.description = description
-        self.refrence_id = refrence_id
-        self.admin_id = admin_id

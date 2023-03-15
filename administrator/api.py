@@ -4,7 +4,7 @@ from flask_cors import CORS
 
 from .login import LoginOperatorsAPI
 from .logout import LogoutOperatorsAPI
-from .main import AdministratorAPI, MeAdministratorAPI
+from .main import AdministratorAPI, MeAdministratorAPI, InfoAdministratorAPI
 from .refresh_token import AdministratorRefreshToken
 from .cron_task import CheckExpiredTokenAPI
 
@@ -16,6 +16,7 @@ api = Api(administrator_api)
 api.add_resource(LoginOperatorsAPI, '/login')
 api.add_resource(LogoutOperatorsAPI, '/logout')
 api.add_resource(AdministratorAPI, '')
+api.add_resource(InfoAdministratorAPI, '/<id>')
 api.add_resource(MeAdministratorAPI, '/@me')
 api.add_resource(AdministratorRefreshToken, '/@refresh_token')
 api.add_resource(CheckExpiredTokenAPI, '/@checkexpiredtoken')

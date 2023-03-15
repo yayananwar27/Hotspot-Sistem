@@ -10,7 +10,7 @@ from auth_token import create_token
 from helper import get_datetime
 from config import redis_conn
 
-from .logging import authentication_logging_login, authentication_logging_login_ref
+from .logging import authentication_logging_login
 
 redcon = redis_conn()
 

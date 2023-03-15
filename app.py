@@ -7,7 +7,7 @@ from administrator.models import db_admin
 from administrator.api import administrator_api
 from administrator.login import LoginOperatorsAPI
 from administrator.logout import LogoutOperatorsAPI
-from administrator.main import AdministratorAPI, MeAdministratorAPI
+from administrator.main import AdministratorAPI, MeAdministratorAPI, InfoAdministratorAPI
 from administrator.refresh_token import AdministratorRefreshToken
 
 from config import scheduler
@@ -50,6 +50,7 @@ docs.register(LogoutOperatorsAPI, blueprint='administrator_api')
 docs.register(AdministratorRefreshToken, blueprint='administrator_api')
 #Add docs Administrator API
 docs.register(AdministratorAPI, blueprint='administrator_api')
+docs.register(InfoAdministratorAPI, blueprint='administrator_api')
 docs.register(MeAdministratorAPI, blueprint='administrator_api')
 
 # fungsi untuk menghentikan scheduler
