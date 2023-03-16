@@ -68,9 +68,12 @@ class CheckExpiredTokenAPI(MethodResource, Resource):
                     redis_str = 'admin_access_token:'
                 if _expired_token.type_token == 'refresh_token':
                     redis_str = 'admin_refresh_token:'
-
-                redcon.delete(redis_str+_expired_token.token_value)
-                print(_expired_token.request_id)
+                
+                try:
+                    redcon.delete(redis_str+_expired_token.token_value)
+                except:
+                    'nothing'
+                
                 old_token = admin_token_old(_expired_token.request_id, _expired_token.admin_id, _expired_token.type_token, _expired_token.token_value, _expired_token.expired, _expired_token.allowed_access, _expired_token.created_at)
                 db_admin.session.add(old_token)
                 db_admin.session.commit()

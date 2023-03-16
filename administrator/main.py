@@ -276,11 +276,11 @@ class InfoAdministratorAPI(MethodResource, Resource):
     @doc(description='Administrato Info', tags=['Administrator'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @marshal_with(AdministratorSchema)
     @check_header
-    def get(self, id=0):
+    def get(self, id):
         try:
-            administrators = administrator.query.filter_by(id=id).all()
+            administrators = administrator.query.filter_by(id=id).first()
             
-            administrators = {
+            _administrators = {
                 'id' : administrators.id,
                 'email' : administrators.email,
                 'fullname' : administrators.fullname,
@@ -288,7 +288,7 @@ class InfoAdministratorAPI(MethodResource, Resource):
                 'active':administrators.active
             }
             
-            return jsonify(administrator)
+            return jsonify(_administrators)
         except Exception as e:
             print(e)
             error = {"message":e}
