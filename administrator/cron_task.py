@@ -29,7 +29,6 @@ def expired_token_admin_check():
         headers = {"Accept":"application/json","Content-Type": "application/json"}
         url = f"http://127.0.0.1:5000/administrator/@checkexpiredtoken"
         body = {'secret_keys':"{}".format(os.environ["SECRET_KEY"])}
-        #body = {'secret_keys':"{}".format(current_app.config['SECRET_KEY'])}
         _session = requests.Session()
 
         try:

@@ -9,6 +9,7 @@ flask_apispec
 flask_restful
 flask-cors
 flask-mysql
+Flask-Migrate
 mysqlclient
 redis
 authlib
