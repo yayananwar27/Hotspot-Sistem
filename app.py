@@ -2,13 +2,19 @@ from flask import Flask
 from config import ApplicationConfig
 from flask_apispec.extension import FlaskApiSpec
 from flask_migrate import Migrate
-from administrator.models import db_admin
 
+#Administrator Segment
+from administrator.models import db_admin
 from administrator.api import administrator_api
 from administrator.login import LoginOperatorsAPI
 from administrator.logout import LogoutOperatorsAPI
 from administrator.main import AdministratorAPI, MeAdministratorAPI, InfoAdministratorAPI
 from administrator.refresh_token import AdministratorRefreshToken
+
+#HotspotPlan Segment
+from hotspot_plan.models import db_plan
+from hotspot_plan.api import hotspotplan_api
+from hotspot_plan.plantype import HotspotplanttypeAPI, InfoHotspotplantypeAPI
 
 from config import scheduler
 
@@ -16,7 +22,8 @@ app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
 
 # tambahkan ini untuk menggunakan Flask-Migrate
-migrate = Migrate(app, db_admin)
+migrate_administrator = Migrate(app, db_admin)
+migrate_hotspotplan = Migrate(app, db_plan)
 
 #import yang di schedeluer
 from administrator.cron_task import expired_token_admin_check
@@ -26,10 +33,12 @@ from administrator.cron_task import expired_token_admin_check
 
 #Model init table
 db_admin.init_app(app)
+db_plan.init_app(app)
 
 with app.app_context():
     scheduler.start()
     db_admin.create_all()
+    db_plan.create_all()
 
 docs = FlaskApiSpec(app)
 
@@ -45,6 +54,14 @@ docs.register(AdministratorRefreshToken, blueprint='administrator_api')
 docs.register(AdministratorAPI, blueprint='administrator_api')
 docs.register(InfoAdministratorAPI, blueprint='administrator_api')
 docs.register(MeAdministratorAPI, blueprint='administrator_api')
+
+#register Hotspot Plan
+app.register_blueprint(hotspotplan_api, url_prefix='/hotspot_plan')
+#Add docs CRUD hotspot Plan Type
+docs.register(HotspotplanttypeAPI, blueprint=hotspotplan_api)
+docs.register(InfoHotspotplantypeAPI, blueprint=hotspotplan_api)
+
+
 
 # fungsi untuk menghentikan scheduler
 def shutdown_scheduler():

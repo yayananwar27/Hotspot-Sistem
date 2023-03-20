@@ -1,4 +1,6 @@
 import time
+import random
+import string
 from datetime import datetime
 
 class get_datetime():
@@ -22,4 +24,10 @@ class get_datetime():
         dt_obj = datetime.strptime(self.datetimenya, "%Y-%m-%d %H:%M:%S")
         unix_time = int(time.mktime(dt_obj.timetuple()))
         return unix_time
-        
+    
+class ambil_random():
+    def __init__(self, panjang):
+        self.panjang = panjang
+        self.karakter = string.ascii_letters+string.digits     
+    def __str__(self):
+        return ''.join(random.choices(self.karakter, k=self.panjang))
