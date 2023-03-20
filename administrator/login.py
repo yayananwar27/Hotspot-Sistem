@@ -101,7 +101,7 @@ class LoginOperatorsAPI(MethodResource, Resource):
                 print("Logging Failed")
 
             #Memasukkan refresh_token ke redis dan DB token
-            redcon.set(str('admin_refresh_token:'+access_token), str(refresh_payload))
+            redcon.set(str('admin_refresh_token:'+refresh_token), str(refresh_payload))
             new_token_ref = admin_token(administrator_exists.id, 'refresh_token', refresh_token, _exprefresh, device)
             db_admin.session.add(new_token_ref)
             db_admin.session.commit()

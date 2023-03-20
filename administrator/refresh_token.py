@@ -36,14 +36,18 @@ class AdministratorRefreshToken(MethodResource, Resource):
 
             #verifikasi refresh token
             authorization = 'admin_refresh_token:'+refresh_token
-            data = redcon.get(authorization).decode('utf-8')
+            
+            try:
+                data = redcon.get(authorization).decode('utf-8')
+            except:
+                data = None
             if data == None:
                 return jsonify({"message": "Unauthorized"}), 401
+            
             result = ast.literal_eval(data)
             if result['device'] != device:
                 return jsonify({"message": "Forbidden"}), 403
-            
-            request_id = admin_token.query.filter.by(token_value=authorization).first()
+            request_id = admin_token.query.filter_by(token_value=refresh_token).first()
             result['request_id'] = request_id.request_id
             
             #ambil datetime dan generete tokennya

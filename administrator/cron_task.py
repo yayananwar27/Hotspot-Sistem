@@ -54,6 +54,7 @@ class CheckExpiredTokenAPI(MethodResource, Resource):
             if kwargs['secret_keys'] != current_app.config['SECRET_KEY']:
                 return jsonify({"message": "Unauthorized"}), 401
             
+            expired_token = None
             expired_token = admin_token.query.filter(admin_token.expired<dt_now.unix()).all()
             
             if len(expired_token) < 1:
