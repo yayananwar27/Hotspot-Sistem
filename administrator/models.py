@@ -1,9 +1,13 @@
-from flask_sqlalchemy import SQLAlchemy
+
 from secrets import token_hex
 from helper import get_datetime
 
+from config import db
+db_admin = db
 
-db_admin = SQLAlchemy()
+def init_app(app):
+    with app.app_context():
+        db_admin.create_all()
 
 def get_uuid(x : int):
     return token_hex(x)
@@ -16,20 +20,6 @@ def get_requestid():
 def get_requestidref():
     data = str(get_uuid(8))+'-'+str(get_uuid(4))+'-'+str(get_uuid(4))+'-'+str(get_uuid(4))+'-'+str(get_uuid(12))
     return data
-
-def get_logid():
-    #unix_time = get_datetime()
-    #data = str(get_uuid(16))+str(unix_time.unix())
-    try:
-        id = admin_log.query.order_by(admin_log.id.desc()).first()
-        id = id.id
-        if id:
-            _id = int(id)
-            _id = _id+1
-            return _id
-    except:
-        return 1
-    
     
 
 class administrator(db_admin.Model):

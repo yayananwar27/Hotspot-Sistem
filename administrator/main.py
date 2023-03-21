@@ -6,7 +6,7 @@ from flask_apispec import marshal_with, doc, use_kwargs
 from functools import wraps
 
 from config import redis_conn
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import generate_password_hash
 from .models import db_admin, administrator, admin_token
 from .logging import administrator_logging_create, administrator_logging_update, administrator_logging_delete
 
@@ -44,11 +44,14 @@ def check_header(f):
 def info_administrator():
     token=request.headers['Authorization']
     authorization = 'admin_access_token:'+token
-    data = redcon.get(authorization).decode('utf-8')
-    result = ast.literal_eval(data)
-    request_id = admin_token.query.filter_by(token_value=token).first()
-    result['request_id'] = request_id.request_id
-    return result
+    try:
+        data = redcon.get(authorization).decode('utf-8')
+        result = ast.literal_eval(data)
+        request_id = admin_token.query.filter_by(token_value=token).first()
+        result['request_id'] = request_id.request_id
+        return result
+    except:
+        return None
 
 #User Schema
 class AdministratorSchema(Schema):
@@ -280,15 +283,17 @@ class InfoAdministratorAPI(MethodResource, Resource):
         try:
             administrators = administrator.query.filter_by(id=id).first()
             
-            _administrators = {
-                'id' : administrators.id,
-                'email' : administrators.email,
-                'fullname' : administrators.fullname,
-                'created_at' : administrators.created_at, 
-                'active':administrators.active
-            }
+            if administrators:
+                _administrators = {
+                    'id' : administrators.id,
+                    'email' : administrators.email,
+                    'fullname' : administrators.fullname,
+                    'created_at' : administrators.created_at, 
+                    'active':administrators.active
+                }
+                return jsonify(_administrators)
             
-            return jsonify(_administrators)
+            return jsonify({"message": "Not Found"}), 404
         except Exception as e:
             print(e)
             error = {"message":e}

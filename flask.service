@@ -1,0 +1,12 @@
+[Unit]
+Description=Gunicorn instance to serve Flask
+After=network.target
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/opt/logintest
+Environment="PATH=/opt/logintest/venv/bin"
+#ExecStart=/opt/logintest/venv/bin/gunicorn --workers 8 --access-logfile /var/log/gunicorn-access.log --error-logfile /var/log/gunicorn-error.log --bind 0.0.0.0:5000 wsgi:app
+ExecStart=/opt/logintest/venv/bin/gunicorn --threads 4 --access-logfile /var/log/gunicorn-access.log --error-logfile /var/log/gunicorn-error.log --bind 0.0.0.0:5000 wsgi:app
+[Install]
+WantedBy=multi-user.target
