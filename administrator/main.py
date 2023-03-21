@@ -44,11 +44,14 @@ def check_header(f):
 def info_administrator():
     token=request.headers['Authorization']
     authorization = 'admin_access_token:'+token
-    data = redcon.get(authorization).decode('utf-8')
-    result = ast.literal_eval(data)
-    request_id = admin_token.query.filter_by(token_value=token).first()
-    result['request_id'] = request_id.request_id
-    return result
+    try:
+        data = redcon.get(authorization).decode('utf-8')
+        result = ast.literal_eval(data)
+        request_id = admin_token.query.filter_by(token_value=token).first()
+        result['request_id'] = request_id.request_id
+        return result
+    except:
+        return None
 
 #User Schema
 class AdministratorSchema(Schema):

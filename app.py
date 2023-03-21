@@ -14,7 +14,9 @@ from administrator.refresh_token import AdministratorRefreshToken
 #HotspotPlan Segment
 from hotspot_plan.models import db_plan
 from hotspot_plan.api import hotspotplan_api
-from hotspot_plan.plantype import HotspotplanttypeAPI, InfoHotspotplantypeAPI
+from hotspot_plan.plantype import HotspotplantypeAPI, InfoHotspotplantypeAPI
+from hotspot_plan.plandefault import HotspotplandefaultAPI, InfoHotspotplandefaultAPI
+from hotspot_plan.plansite import HotspotplansiteAPI, InfoHotspotplansiteAPI
 
 from config import scheduler
 
@@ -58,10 +60,14 @@ docs.register(MeAdministratorAPI, blueprint='administrator_api')
 #register Hotspot Plan
 app.register_blueprint(hotspotplan_api, url_prefix='/hotspot_plan')
 #Add docs CRUD hotspot Plan Type
-docs.register(HotspotplanttypeAPI, blueprint=hotspotplan_api)
+docs.register(HotspotplantypeAPI, blueprint=hotspotplan_api)
 docs.register(InfoHotspotplantypeAPI, blueprint=hotspotplan_api)
-
-
+#Add docs CRUD hotspot Plan default
+docs.register(HotspotplandefaultAPI, blueprint=hotspotplan_api)
+docs.register(InfoHotspotplandefaultAPI, blueprint=hotspotplan_api)
+#Add docs CRUD hotspot Plan Site
+docs.register(HotspotplansiteAPI, blueprint=hotspotplan_api)
+docs.register(InfoHotspotplansiteAPI, blueprint=hotspotplan_api)
 
 # fungsi untuk menghentikan scheduler
 def shutdown_scheduler():

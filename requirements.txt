@@ -18,3 +18,4 @@ flask-APScheduler
 requests
 gunicorn
 wheel
+apispec-webframeworks

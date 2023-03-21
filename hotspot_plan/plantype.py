@@ -9,7 +9,7 @@ from administrator.main import info_administrator
 
 from config import redis_conn
 from .models import db_plan, plan_type
-from .logging import planttype_logging_create, planttype_logging_update, planttype_logging_delete
+from .logging import plantype_logging_create, plantype_logging_update, plantype_logging_delete
 
 redcon = redis_conn()
 
@@ -52,7 +52,7 @@ class HotspotplantypeSchemaDelete(Schema):
 
 #class CRUD plant type
 
-class HotspotplanttypeAPI(MethodResource,  Resource):
+class HotspotplantypeAPI(MethodResource,  Resource):
     @doc(description="Create Hotspot Plan Type", tags=['Hotspot Plan'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(HotspotplantypeSchemaCreate, location=('json'))
     @marshal_with(HotspotplantypeSchema)
@@ -72,14 +72,14 @@ class HotspotplanttypeAPI(MethodResource,  Resource):
             
             new_plan_type = plan_type(name, enable_uptime, enable_kuota, enable_expired, enable_limit_shared)
             db_plan.session.add(new_plan_type)
-            db_plan.session.commit(new_plan_type)
+            db_plan.session.commit()
 
             data = new_plan_type.get_data()
             
             #Logging
             info_admin = info_administrator()
             accessed = {'ip':request.remote_addr, 'id_token': info_admin['admin_id']}
-            new_log = planttype_logging_create(accessed, str(data), data['id'], info_admin['admin_id'])
+            new_log = plantype_logging_create(accessed, str(data), data['id'], info_admin['admin_id'])
             if new_log == False:
                 print("Logging Failed")
             
@@ -149,7 +149,7 @@ class HotspotplanttypeAPI(MethodResource,  Resource):
                 #Logging
                 info_admin = info_administrator()
                 accessed = {'ip':request.remote_addr, 'id_token': info_admin['admin_id']}
-                new_log = planttype_logging_update(accessed, str(data), data['id'], info_admin['admin_id'])
+                new_log = plantype_logging_update(accessed, str(data), data['id'], info_admin['admin_id'])
                 if new_log == False:
                     print("Logging Failed")
             
@@ -182,7 +182,7 @@ class HotspotplanttypeAPI(MethodResource,  Resource):
                 #Logging
                 info_admin = info_administrator()
                 accessed = {'ip':request.remote_addr, 'id_token':info_admin['request_id']}
-                new_log = planttype_logging_delete(accessed, str(old_data), old_data['id'], info_admin['admin_id'])
+                new_log = plantype_logging_delete(accessed, str(old_data), old_data['id'], info_admin['admin_id'])
                 if new_log == False:
                     print("Logging Failed")
                 
