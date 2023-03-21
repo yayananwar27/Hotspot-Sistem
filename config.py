@@ -4,7 +4,6 @@ load_dotenv()
 
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
-from apispec_webframeworks.flask import FlaskPlugin
 import redis
 
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -50,7 +49,7 @@ class ApplicationConfig:
     APISPEC_SPEC = APISpec(
         title='HS Sistem',
         version='1.0.0',
-        plugins=[MarshmallowPlugin(), FlaskPlugin()],
+        plugins=[MarshmallowPlugin()],
         openapi_version='2.0.0'
     )
     APISPEC_SWAGGER_URL = "/swagger/"  # URI to access API Doc JSON

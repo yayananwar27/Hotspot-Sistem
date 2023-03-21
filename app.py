@@ -39,10 +39,9 @@ db.init_app(app)
 admin_init_app(app)
 plan_init_app(app)
 
-docs = FlaskApiSpec(app)
-
 with app.app_context():
     scheduler.start()
+    docs = FlaskApiSpec(app)
 
     #register Administrator
     app.register_blueprint(administrator_api, url_prefix='/administrator')
@@ -68,18 +67,6 @@ with app.app_context():
     #Add docs CRUD hotspot Plan Site
     docs.register(HotspotplansiteAPI, blueprint='hotspotplan_api')
     docs.register(InfoHotspotplansiteAPI, blueprint='hotspotplan_api')
-
-#register Hotspot Plan
-app.register_blueprint(hotspotplan_api, url_prefix='/hotspot_plan')
-#Add docs CRUD hotspot Plan Type
-docs.register(HotspotplantypeAPI, blueprint=hotspotplan_api)
-docs.register(InfoHotspotplantypeAPI, blueprint=hotspotplan_api)
-#Add docs CRUD hotspot Plan default
-docs.register(HotspotplandefaultAPI, blueprint=hotspotplan_api)
-docs.register(InfoHotspotplandefaultAPI, blueprint=hotspotplan_api)
-#Add docs CRUD hotspot Plan Site
-docs.register(HotspotplansiteAPI, blueprint=hotspotplan_api)
-docs.register(InfoHotspotplansiteAPI, blueprint=hotspotplan_api)
 
 # fungsi untuk menghentikan scheduler
 def shutdown_scheduler():

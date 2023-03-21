@@ -5,7 +5,6 @@ from flask_cors import CORS
 from .plantype import HotspotplantypeAPI, InfoHotspotplantypeAPI
 from .plandefault import HotspotplandefaultAPI, InfoHotspotplandefaultAPI
 from .plansite import HotspotplansiteAPI, InfoHotspotplansiteAPI
-from .models import db_plan
 
 
 hotspotplan_api = Blueprint('hotspotplan_api',__name__)
