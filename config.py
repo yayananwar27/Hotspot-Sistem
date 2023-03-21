@@ -10,6 +10,9 @@ import redis
 from apscheduler.schedulers.background import BackgroundScheduler
 scheduler = BackgroundScheduler()
 
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
+
 #from flask_apscheduler import APScheduler
 #scheduler = APScheduler()
 

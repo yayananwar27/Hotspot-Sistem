@@ -1,7 +1,10 @@
-from flask_sqlalchemy import SQLAlchemy
 
-db_plan = SQLAlchemy()
+from config import db
+db_plan = db
 
+def init_app(app):
+    with app.app_context():
+        db_plan.create_all()
 
 class plan_type(db_plan.Model):
     __tablename__="plan_type"

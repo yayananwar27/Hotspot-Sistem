@@ -1,9 +1,13 @@
-from flask_sqlalchemy import SQLAlchemy
+
 from secrets import token_hex
 from helper import get_datetime
 
+from config import db
+db_admin = db
 
-db_admin = SQLAlchemy()
+def init_app(app):
+    with app.app_context():
+        db_admin.create_all()
 
 def get_uuid(x : int):
     return token_hex(x)
