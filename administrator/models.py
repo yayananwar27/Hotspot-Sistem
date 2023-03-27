@@ -20,7 +20,11 @@ def get_requestid():
 def get_requestidref():
     data = str(get_uuid(8))+'-'+str(get_uuid(4))+'-'+str(get_uuid(4))+'-'+str(get_uuid(4))+'-'+str(get_uuid(12))
     return data
-    
+
+def created_time():
+    date = get_datetime()
+    return str(date)
+
 
 class administrator(db_admin.Model):
     __tablename__ = "administrator"
@@ -39,6 +43,7 @@ class administrator(db_admin.Model):
         self.password = password
         self.fullname = fullname
         self.active = active
+        self.created_at = get_datetime()
     
 
     def get_data(self):
@@ -71,6 +76,7 @@ class admin_token(db_admin.Model):
             self.request_id = get_requestidref()
         else:
             self.request_id = get_requestid()
+        self.created_at = get_datetime()
         
     def get_data(self):
         data = {
@@ -133,6 +139,7 @@ class admin_log(db_admin.Model):
         self.description = description
         self.refrence_id = refrence_id
         self.admin_id = admin_id
+        self.timestamp = get_datetime()
 
     def get_data(self):
         data = {
