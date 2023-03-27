@@ -14,7 +14,8 @@ class plan_type(db_plan.Model):
     enable_kuota = db_plan.Column(db_plan.Boolean, default=False, nullable=False)
     enable_expired = db_plan.Column(db_plan.Boolean, default=False, nullable=False)
     enable_limit_shared = db_plan.Column(db_plan.Boolean, default=False, nullable=False)
-    plan_dafaulting = db_plan.relationship('plan_default', backref='plan_type', passive_deletes=True, lazy=True)
+    plan_templating = db_plan.relationship('plan_template', backref='plan_type', passive_deletes=True, lazy=True)
+    plan_siteing = db_plan.relationship('plan_site', backref='plan_type', passive_deletes=True, lazy=True)
 
     def __init__(self, name, enable_uptime=False, enable_kuota=False, enable_expired=False, enable_limit_shared=False):
         self.name = name
@@ -45,7 +46,7 @@ class plan_template(db_plan.Model):
     limit_shared = db_plan.Column(db_plan.Integer, nullable=False)
     type_id = db_plan.Column(db_plan.Integer, db_plan.ForeignKey('plan_type.id'), nullable=False)
     plan_siteing = db_plan.relationship('plan_site', backref='plan_template', passive_deletes=True, lazy=True)
-    hs_templating = db_plan.relationship('template_hotspot_plan', backref='plan_template', passive_deletes=True, lazy=True)
+    #hs_templating = db_plan.relationship('template_hotspot_plan', backref='plan_template', passive_deletes=True, lazy=True)
 
     def __init__(self,id, name, uptime, expired, price, kuota, type_id, limit_shared=3):
         self.id = id
@@ -79,6 +80,7 @@ class plan_site(db_plan.Model):
     price = db_plan.Column(db_plan.Integer, nullable=False)
     kuota = db_plan.Column(db_plan.Integer, nullable=False)
     limit_shared = db_plan.Column(db_plan.Integer, nullable=False)
+    template_id = db_plan.Column(db_plan.String(255), db_plan.ForeignKey('plan_template.id'), nullable=True)
     type_id = db_plan.Column(db_plan.Integer, db_plan.ForeignKey('plan_type.id'), nullable=False)
 
     def __init__(self, id,name, uptime, expired, price, kuota, type_id, limit_shared=3):

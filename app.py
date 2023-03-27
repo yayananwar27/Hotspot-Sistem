@@ -28,7 +28,7 @@ migrate_administrator = Migrate(app, db_admin)
 migrate_hotspotplan = Migrate(app, db_plan)
 
 #import yang di schedeluer
-from administrator.cron_task import expired_token_admin_check
+from administrator.cron_task import expired_token_admin_check, init_cron_app
 #Init Scheduler
 #scheduler.init_app(app)
 
@@ -38,6 +38,7 @@ from config import db
 db.init_app(app)
 admin_init_app(app)
 plan_init_app(app)
+init_cron_app(app)
 
 with app.app_context():
     scheduler.start()

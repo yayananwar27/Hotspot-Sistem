@@ -1,4 +1,4 @@
-from config import scheduler
+from config import scheduler, db
 from .models import admin_token, admin_token_old, db_admin
 from config import redis_conn
 from helper import get_datetime
@@ -8,6 +8,7 @@ from marshmallow import Schema, fields
 from flask_apispec import use_kwargs
 from flask import request, jsonify, current_app
 import requests
+from flask.signals import request_finished
 
 import urllib3
 import json
@@ -18,7 +19,7 @@ load_dotenv()
 
 redcon = redis_conn()
 dt_now = get_datetime()
-
+app = None
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -44,6 +45,12 @@ def expired_token_admin_check():
     finally:
         _session.close()
 
+def init_cron_app(app):
+    app = app
+
+def expire_session(sender, response, **extra):
+    db.session.expire_all()
+
 class AdministratorSchemaCheckToken(Schema):
     secret_keys = fields.String(required=True, metadata={"description":"secret_token"})
 
@@ -56,6 +63,7 @@ class CheckExpiredTokenAPI(MethodResource, Resource):
             if kwargs['secret_keys'] != current_app.config['SECRET_KEY']:
                 return jsonify({"message": "Unauthorized"}), 401
             
+            request_finished.connect(expire_session, app)
             expired_token = None
             expired_token = admin_token.query.filter(admin_token.expired<dt_now.unix()).all()
             
