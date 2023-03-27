@@ -18,7 +18,7 @@ import os
 load_dotenv()
 
 redcon = redis_conn()
-dt_now = get_datetime()
+
 app = None
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -65,6 +65,7 @@ class CheckExpiredTokenAPI(MethodResource, Resource):
             
             request_finished.connect(expire_session, app)
             expired_token = None
+            dt_now = get_datetime()
             expired_token = admin_token.query.filter(admin_token.expired<dt_now.unix()).all()
             
             if len(expired_token) < 1:
