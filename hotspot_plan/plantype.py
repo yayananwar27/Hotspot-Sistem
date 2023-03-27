@@ -91,6 +91,8 @@ class HotspotplantypeAPI(MethodResource,  Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_plan.session.expire_all()
     
     @doc(description="List Hotspot Plan Type", tags=['Hotspot Plan'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @marshal_with(HotspotplantypeSchemaList)
@@ -121,6 +123,8 @@ class HotspotplantypeAPI(MethodResource,  Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_plan.session.expire_all()
     
     @doc(description="Update Hotspot Plan Type", tags=['Hotspot Plan'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(HotspotplantypeSchema, location=('json'))
@@ -163,6 +167,8 @@ class HotspotplantypeAPI(MethodResource,  Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_plan.session.expire_all()
         
     @doc(description="Delete Hotspot Plan Type", tags=['Hotspot Plan'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(HotspotplantypeSchemaDelete, location=('json'))
@@ -196,6 +202,8 @@ class HotspotplantypeAPI(MethodResource,  Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_plan.session.expire_all()
 
 class InfoHotspotplantypeAPI(MethodResource, Resource):
     @doc(description="Info Hotspot Plan Type", tags=['Hotspot Plan'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
@@ -217,3 +225,5 @@ class InfoHotspotplantypeAPI(MethodResource, Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_plan.session.expire_all()

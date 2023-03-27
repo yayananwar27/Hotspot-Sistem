@@ -15,7 +15,7 @@ from administrator.refresh_token import AdministratorRefreshToken
 from hotspot_plan.models import db_plan, init_app as plan_init_app
 from hotspot_plan.api import hotspotplan_api
 from hotspot_plan.plantype import HotspotplantypeAPI, InfoHotspotplantypeAPI
-from hotspot_plan.plandefault import HotspotplandefaultAPI, InfoHotspotplandefaultAPI
+from hotspot_plan.plantemplate import HotspotplantemplateAPI, InfoHotspotplantemplateAPI
 from hotspot_plan.plansite import HotspotplansiteAPI, InfoHotspotplansiteAPI
 
 from config import scheduler
@@ -61,9 +61,9 @@ with app.app_context():
     #Add docs CRUD hotspot Plan Type
     docs.register(HotspotplantypeAPI, blueprint='hotspotplan_api')
     docs.register(InfoHotspotplantypeAPI, blueprint='hotspotplan_api')
-    #Add docs CRUD hotspot Plan default
-    docs.register(HotspotplandefaultAPI, blueprint='hotspotplan_api')
-    docs.register(InfoHotspotplandefaultAPI, blueprint='hotspotplan_api')
+    #Add docs CRUD hotspot Plan template
+    docs.register(HotspotplantemplateAPI, blueprint='hotspotplan_api')
+    docs.register(InfoHotspotplantemplateAPI, blueprint='hotspotplan_api')
     #Add docs CRUD hotspot Plan Site
     docs.register(HotspotplansiteAPI, blueprint='hotspotplan_api')
     docs.register(InfoHotspotplansiteAPI, blueprint='hotspotplan_api')

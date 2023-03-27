@@ -34,8 +34,8 @@ class plan_type(db_plan.Model):
         }
         return data
 
-class plan_default(db_plan.Model):
-    __tablename__="plan_default"
+class plan_template(db_plan.Model):
+    __tablename__="plan_template"
     id = db_plan.Column(db_plan.String(255), primary_key=True, unique=True)
     name = db_plan.Column(db_plan.String(255), unique=True)
     uptime = db_plan.Column(db_plan.Integer, nullable=False)
