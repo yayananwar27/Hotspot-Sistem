@@ -33,7 +33,7 @@ def expired_token_admin_check():
         _session = requests.Session()
 
         try:
-            response = _session.post(url, headers=headers, data=json.dumps(body), verify=False)
+            response = _session.get(url, headers=headers, data=json.dumps(body), verify=False)
             api_data = response.json()
             if api_data['message'] != "success":
                 print("Error task")
@@ -56,7 +56,7 @@ class AdministratorSchemaCheckToken(Schema):
 
 class CheckExpiredTokenAPI(MethodResource, Resource):
     @use_kwargs(AdministratorSchemaCheckToken, location=('json'))
-    def post(self, **kwargs):
+    def get(self, **kwargs):
         try:
             if request.remote_addr != '127.0.0.1':
                 return jsonify({"message": "Unauthorized"}), 401
