@@ -40,7 +40,7 @@ class ApplicationConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_DATABASE_URI = "mysql://{0}:{1}@{2}:{3}/{4}".format(os.environ["DATABASE_USER"],os.environ["DATABASE_PASSWORD"],os.environ["DATABASE_HOST"],os.environ["DATABASE_PORT"],os.environ["DATABASE_DB"])
-
+    SQLALCHEMY_ENGINE_OPTIONS = {'pool_pre_ping': True, 'pool_recycle':60}
     #SESSION_TYPE = "redis"
     #SESSION_PERMANENT = False
     #SESSION_USE_SIGNER = True

@@ -5,7 +5,7 @@ from flask_apispec.views import MethodResource
 from flask_restful import Resource
 from functools import wraps
 from config import redis_conn
-from .models import admin_token, administrator
+from .models import admin_token, administrator, db_admin
 
 redcon = redis_conn()
 
@@ -77,3 +77,6 @@ class LogoutOperatorsAPI(MethodResource, Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        
+        finally:
+            db_admin.session.expire_all()

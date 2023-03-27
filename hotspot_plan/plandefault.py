@@ -113,6 +113,8 @@ class HotspotplandefaultAPI(MethodResource,  Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_plan.session.expire_all()
         
     @doc(description="List Hotspot Plan default", tags=['Hotspot Plan'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @marshal_with(HotspotplandefaultSchemaList)
@@ -144,6 +146,8 @@ class HotspotplandefaultAPI(MethodResource,  Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_plan.session.expire_all()
     
     @doc(description="Update Hotspot Plan default", tags=['Hotspot Plan'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(HotspotplandefaultSchema, location=('json'))
@@ -190,6 +194,8 @@ class HotspotplandefaultAPI(MethodResource,  Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_plan.session.expire_all()
     
     @doc(description="Delete Hotspot Plan Default", tags=['Hotspot Plan'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(HotspotplandefaultSchemaDelete, location=('json'))
@@ -223,6 +229,8 @@ class HotspotplandefaultAPI(MethodResource,  Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_plan.session.expire_all()
 
 class InfoHotspotplandefaultAPI(MethodResource, Resource):
     @doc(description="Info Hotspot Plan default", tags=['Hotspot Plan'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
@@ -244,3 +252,5 @@ class InfoHotspotplandefaultAPI(MethodResource, Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_plan.session.expire_all()

@@ -41,6 +41,8 @@ def expired_token_admin_check():
 
     except Exception as e:
         print(e)
+    finally:
+        _session.close()
 
 class AdministratorSchemaCheckToken(Schema):
     secret_keys = fields.String(required=True, metadata={"description":"secret_token"})
@@ -91,3 +93,6 @@ class CheckExpiredTokenAPI(MethodResource, Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        
+        finally:
+            db_admin.session.expire_all()

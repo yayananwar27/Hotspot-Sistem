@@ -1,0 +1,11 @@
+[Unit]
+Description=uWSGI instance to serve Flask
+After=network.target
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/logintest
+Environment="PATH=/opt/logintest/venv/bin"
+ExecStart=/opt/logintest/venv/bin/uwsgi --ini /opt/logintest/uwsgi.ini --logto /var/log/uwsgi/flaskapp.log
+[Install]
+WantedBy=multi-user.target

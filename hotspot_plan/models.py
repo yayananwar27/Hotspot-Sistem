@@ -8,7 +8,7 @@ def init_app(app):
 
 class plan_type(db_plan.Model):
     __tablename__="plan_type"
-    id = db_plan.Column(db_plan.Integer(), primary_key=True,  unique=True, autoincrement=True)
+    id = db_plan.Column(db_plan.Integer, primary_key=True,  unique=True, autoincrement=True)
     name = db_plan.Column(db_plan.String(255), unique=True)
     enable_uptime = db_plan.Column(db_plan.Boolean, default=False, nullable=False)
     enable_kuota = db_plan.Column(db_plan.Boolean, default=False, nullable=False)
@@ -44,6 +44,8 @@ class plan_default(db_plan.Model):
     kuota = db_plan.Column(db_plan.Integer, nullable=False)
     limit_shared = db_plan.Column(db_plan.Integer, nullable=False)
     type_id = db_plan.Column(db_plan.Integer, db_plan.ForeignKey('plan_type.id'), nullable=False)
+    plan_siteing = db_plan.relationship('plan_site', backref='plan_template', passive_deletes=True, lazy=True)
+    hs_templating = db_plan.relationship('template_hotspot_plan', backref='plan_template', passive_deletes=True, lazy=True)
 
     def __init__(self,id, name, uptime, expired, price, kuota, type_id, limit_shared=3):
         self.id = id

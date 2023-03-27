@@ -82,3 +82,5 @@ class AdministratorRefreshToken(MethodResource, Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_admin.session.expire_all()

@@ -133,6 +133,8 @@ class AdministratorAPI(MethodResource, Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_admin.session.expire_all()
         
     @doc(description='List Administrator', tags=['Administrator'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @marshal_with(AdministratorSchemaList)
@@ -161,6 +163,8 @@ class AdministratorAPI(MethodResource, Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_admin.session.expire_all()
     
     @doc(description='Update Administrator', tags=['Administrator'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(AdministratorSchema, location=('json'))
@@ -231,6 +235,9 @@ class AdministratorAPI(MethodResource, Resource):
             respone.status_code = 500
             return respone
         
+        finally:
+            db_admin.session.expire_all()
+        
     @doc(description='Delete Administrator', tags=['Administrator'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(AdministratorSchemaDelete, location=('json'))
     @marshal_with(RespAdministratorSchemaCreate)
@@ -266,13 +273,14 @@ class AdministratorAPI(MethodResource, Resource):
 
             return jsonify({"message": "User Not exists"}), 404
 
-
         except Exception as e:
             print(e)
             error = {"message":e}
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_admin.session.expire_all()
 
 #Class CRUD Administrator
 class InfoAdministratorAPI(MethodResource, Resource):
@@ -300,6 +308,8 @@ class InfoAdministratorAPI(MethodResource, Resource):
             respone = jsonify(error)
             respone.status_code = 500
             return respone
+        finally:
+            db_admin.session.expire_all()
 
 
 #Class untuk info administrator berdasarkan access_token
