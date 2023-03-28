@@ -1,4 +1,3 @@
-
 from config import db
 db_plan = db
 
@@ -46,7 +45,7 @@ class plan_template(db_plan.Model):
     limit_shared = db_plan.Column(db_plan.Integer, nullable=False)
     type_id = db_plan.Column(db_plan.Integer, db_plan.ForeignKey('plan_type.id'), nullable=False)
     plan_siteing = db_plan.relationship('plan_site', backref='plan_template', passive_deletes=True, lazy=True)
-    #hs_templating = db_plan.relationship('template_hotspot_plan', backref='plan_template', passive_deletes=True, lazy=True)
+    hs_templating = db_plan.relationship('template_hotspot_plan', backref='plan_template', passive_deletes=True, lazy=True)
 
     def __init__(self,id, name, uptime, expired, price, kuota, type_id, limit_shared=3):
         self.id = id

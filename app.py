@@ -18,6 +18,10 @@ from hotspot_plan.plantype import HotspotplantypeAPI, InfoHotspotplantypeAPI
 from hotspot_plan.plantemplate import HotspotplantemplateAPI, InfoHotspotplantemplateAPI
 from hotspot_plan.plansite import HotspotplansiteAPI, InfoHotspotplansiteAPI
 
+#HotspotProfile Segment
+from hotspot_profile.models import db_hs, init_app as hs_init_app
+
+
 from config import scheduler
 
 app = Flask(__name__)
@@ -26,9 +30,11 @@ app.config.from_object(ApplicationConfig)
 # tambahkan ini untuk menggunakan Flask-Migrate
 migrate_administrator = Migrate(app, db_admin)
 migrate_hotspotplan = Migrate(app, db_plan)
+migrate_hotspotprofile = Migrate(app, db_hs)
 
 #import yang di schedeluer
 from administrator.cron_task import expired_token_admin_check, init_cron_app
+init_cron_app(app)
 #Init Scheduler
 #scheduler.init_app(app)
 
@@ -38,7 +44,8 @@ from config import db
 db.init_app(app)
 admin_init_app(app)
 plan_init_app(app)
-init_cron_app(app)
+hs_init_app(app)
+
 
 with app.app_context():
     scheduler.start()
