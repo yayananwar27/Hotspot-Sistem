@@ -18,3 +18,14 @@ api.add_resource(HotspotplantemplateAPI, '/plan_template')
 api.add_resource(InfoHotspotplantemplateAPI, '/plan_template/<id>')
 api.add_resource(HotspotplansiteAPI, '/plan_site')
 api.add_resource(InfoHotspotplansiteAPI, '/plan_site/<id>')
+
+def init_docs(docs):
+    #Add docs CRUD hotspot Plan Type
+    docs.register(HotspotplantypeAPI, blueprint='hotspotplan_api')
+    docs.register(InfoHotspotplantypeAPI, blueprint='hotspotplan_api')
+    #Add docs CRUD hotspot Plan template
+    docs.register(HotspotplantemplateAPI, blueprint='hotspotplan_api')
+    docs.register(InfoHotspotplantemplateAPI, blueprint='hotspotplan_api')
+    #Add docs CRUD hotspot Plan Site
+    docs.register(HotspotplansiteAPI, blueprint='hotspotplan_api')
+    docs.register(InfoHotspotplansiteAPI, blueprint='hotspotplan_api')

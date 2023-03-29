@@ -120,7 +120,7 @@ class AdministratorAPI(MethodResource, Resource):
 
             #Logging
             info_admin = info_administrator()
-            accessed = {'ip':request.remote_addr, 'id_token': info_admin['admin_id']}
+            accessed = {'ip':request.remote_addr, 'id_token': info_admin['request_id']}
             new_log = administrator_logging_create(str(accessed), str(data), data['id'], info_admin['admin_id'])
             if new_log == False:
                 print("Logging Failed")
@@ -282,7 +282,7 @@ class AdministratorAPI(MethodResource, Resource):
         finally:
             db_admin.session.expire_all()
 
-#Class CRUD Administrator
+#Info Administrator
 class InfoAdministratorAPI(MethodResource, Resource):
     @doc(description='Administrato Info', tags=['Administrator'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @marshal_with(AdministratorSchema)

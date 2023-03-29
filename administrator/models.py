@@ -1,6 +1,5 @@
 
 from secrets import token_hex
-from helper import get_datetime
 
 from config import db
 db_admin = db
@@ -13,6 +12,7 @@ def get_uuid(x : int):
     return token_hex(x)
 
 def get_requestid():
+    from helper import get_datetime
     unix_time = get_datetime()
     data = str(get_uuid(8))+'-'+str(get_uuid(4))+'-'+str(get_uuid(4))+'-'+str(get_uuid(4))+'-'+str(unix_time.unix())
     return data
@@ -20,7 +20,12 @@ def get_requestid():
 def get_requestidref():
     data = str(get_uuid(8))+'-'+str(get_uuid(4))+'-'+str(get_uuid(4))+'-'+str(get_uuid(4))+'-'+str(get_uuid(12))
     return data
-    
+
+def created_time():
+    from helper import get_datetime
+    date = get_datetime()
+    return str(date)
+
 
 class administrator(db_admin.Model):
     __tablename__ = "administrator"
@@ -28,7 +33,7 @@ class administrator(db_admin.Model):
     email = db_admin.Column(db_admin.String(255), unique=True)
     password = db_admin.Column(db_admin.Text, nullable=False)
     fullname = db_admin.Column(db_admin.String(255))
-    created_at = db_admin.Column(db_admin.DateTime, default=get_datetime())
+    created_at = db_admin.Column(db_admin.DateTime, default=created_time())
     active = db_admin.Column(db_admin.Boolean, default=True, nullable=False)
     logging = db_admin.relationship('admin_log', backref='administrator', cascade="all, delete", passive_deletes=True, lazy=True)
     tokening = db_admin.relationship('admin_token', backref='administrator', cascade="all, delete", passive_deletes=True, lazy=True)
@@ -39,6 +44,7 @@ class administrator(db_admin.Model):
         self.password = password
         self.fullname = fullname
         self.active = active
+        self.created_at = created_time()
     
 
     def get_data(self):
@@ -59,7 +65,7 @@ class admin_token(db_admin.Model):
     token_value = db_admin.Column(db_admin.Text, unique=True, nullable=False)
     expired = db_admin.Column(db_admin.Integer, nullable=False)
     allowed_access = db_admin.Column(db_admin.Text, nullable=False)
-    created_at = db_admin.Column(db_admin.DateTime, default=get_datetime())
+    created_at = db_admin.Column(db_admin.DateTime, default=created_time())
 
     def __init__(self, admin_id, type_token, token_value, expired, allowed_access):
         self.admin_id = admin_id
@@ -71,6 +77,7 @@ class admin_token(db_admin.Model):
             self.request_id = get_requestidref()
         else:
             self.request_id = get_requestid()
+        self.created_at = created_time()
         
     def get_data(self):
         data = {
@@ -122,7 +129,7 @@ class admin_log(db_admin.Model):
     log_object = db_admin.Column(db_admin.String(255), nullable=False)
     action = db_admin.Column(db_admin.String(255), nullable=False)
     description = db_admin.Column(db_admin.Text)
-    timestamp = db_admin.Column(db_admin.DateTime, default=get_datetime())
+    timestamp = db_admin.Column(db_admin.DateTime, default=created_time())
     refrence_id = db_admin.Column(db_admin.String(255))
     admin_id = db_admin.Column(db_admin.String(255), db_admin.ForeignKey('administrator.id', ondelete='CASCADE'), nullable=False)
 
@@ -133,6 +140,7 @@ class admin_log(db_admin.Model):
         self.description = description
         self.refrence_id = refrence_id
         self.admin_id = admin_id
+        self.timestamp = created_time()
 
     def get_data(self):
         data = {

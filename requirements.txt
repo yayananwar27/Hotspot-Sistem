@@ -19,4 +19,5 @@ requests
 gunicorn
 wheel
 apispec-webframeworks
+blinker
 uwsgi
