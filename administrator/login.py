@@ -7,7 +7,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from .models import db_admin, administrator, admin_token
 from auth_token import create_token
-from helper import get_datetime
 from config import redis_conn
 
 from .logging import authentication_logging_login
@@ -37,6 +36,7 @@ class LoginOperatorsAPI(MethodResource, Resource):
     @marshal_with(RespAdministratorLogin)
     def post(self, **kwargs):
         try:
+            from helper import get_datetime
             #ambil kwargs
             email = kwargs['email']
             password = kwargs['password']
@@ -82,8 +82,8 @@ class LoginOperatorsAPI(MethodResource, Resource):
                 refresh_token = create_token(refresh_payload)
                 refresh_token = refresh_token.get_token()
             else:
-                #_exprefresh = int(dt_now.unix()+(60*60*24))
-                _exprefresh = int(dt_now.unix()+(60*10))
+                _exprefresh = int(dt_now.unix()+(60*60*24))
+                #_exprefresh = int(dt_now.unix()+(60*10))
                 refresh_payload = {'admin_id' : administrator_exists.id, 'type':'refresh_token', 'expired':_exprefresh, 'device':device}
                 refresh_token = create_token(refresh_payload)
                 refresh_token = refresh_token.get_token()

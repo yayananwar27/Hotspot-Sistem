@@ -99,7 +99,7 @@ class HotspotplansiteAPI(MethodResource,  Resource):
 
             #Logging
             info_admin = info_administrator()
-            accessed = {'ip':request.remote_addr, 'id_token': info_admin['admin_id']}
+            accessed = {'ip':request.remote_addr, 'id_token': info_admin['request_id']}
             new_log = plansite_logging_create(accessed, str(data), data['id'], info_admin['admin_id'])
             if new_log == False:
                 print("Logging Failed")
@@ -178,7 +178,7 @@ class HotspotplansiteAPI(MethodResource,  Resource):
                 data = get_plansite.get_data()
                 #Logging
                 info_admin = info_administrator()
-                accessed = {'ip':request.remote_addr, 'id_token': info_admin['admin_id']}
+                accessed = {'ip':request.remote_addr, 'id_token': info_admin['request_id']}
                 new_log = plansite_logging_update(accessed, str(data), data['id'], info_admin['admin_id'])
                 if new_log == False:
                     print("Logging Failed")

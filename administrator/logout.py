@@ -8,9 +8,9 @@ from config import redis_conn
 from .models import admin_token, administrator, db_admin
 
 redcon = redis_conn()
+from administrator.main import info_administrator
 
 from .logging import authentication_logging_logout
-from helper import get_datetime
 
 def check_header(f):
     @wraps(f)
@@ -28,7 +28,6 @@ def check_header(f):
 
 class AdministratorSchemaLogout(Schema):
     refresh_token = fields.String(required=True, metadata={"description":"Refresh Token to Delete"})
-    device = fields.String(metadata={"description":"Device Detect Description From Front End"})
 
 class RespAdministratorLogot(Schema):
     messages = fields.Boolean(metadata={"description":"administrator access True/False"})
@@ -40,15 +39,9 @@ class LogoutOperatorsAPI(MethodResource, Resource):
     @check_header
     def post(self, **kwargs):
         try:
-            access_token = request.headers['access_token']
+            access_token = request.headers['Authorization']
             refresh_token = kwargs['refresh_token']
-            device = 'Null'
-            try:
-                device = kwargs['device']
-            except:
-                device = 'Null'
-
-            dt_now = get_datetime()
+            device = request.headers.get('User-Agent')
 
             acc_admin_id_exists = admin_token.query.filter_by(token_value=access_token).first()
             ref_admin_id_exists = admin_token.query.filter_by(token_value=refresh_token).first()
@@ -59,7 +52,9 @@ class LogoutOperatorsAPI(MethodResource, Resource):
             redcon.delete('admin_access_token:'+access_token)
             redcon.delete('admin_refresh_token:'+refresh_token)
 
-            accessed = {'ip':request.remote_addr, 'device':device}
+            info_admin = info_administrator()
+            print(info_admin)
+            accessed = {'ip':request.remote_addr, 'device':device, 'request_id':info_admin}
             administrator_exists = administrator.query.filter_by(id=acc_admin_id_exists.admin_id).first()
             payload = 'Logout Administartor : '+administrator_exists.email+':'+administrator_exists.fullname+'/'+acc_admin_id_exists.token_value+':'+ref_admin_id_exists.token_value
             token_data = {'access_token':acc_admin_id_exists.request_id, 'refresh_token':ref_admin_id_exists.request_id}

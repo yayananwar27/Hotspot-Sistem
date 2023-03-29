@@ -20,3 +20,15 @@ api.add_resource(InfoAdministratorAPI, '/<id>')
 api.add_resource(MeAdministratorAPI, '/@me')
 api.add_resource(AdministratorRefreshToken, '/@refresh_token')
 api.add_resource(CheckExpiredTokenAPI, '/@checkexpiredtoken')
+
+def init_docs(docs):
+    #Add docs Administrator login
+    docs.register(LoginOperatorsAPI, blueprint='administrator_api')
+    #Add docs Administrator logout
+    docs.register(LogoutOperatorsAPI, blueprint='administrator_api')
+    #Add docs Administrator Refresh Token
+    docs.register(AdministratorRefreshToken, blueprint='administrator_api')
+    #Add docs Administrator API
+    docs.register(AdministratorAPI, blueprint='administrator_api')
+    docs.register(InfoAdministratorAPI, blueprint='administrator_api')
+    docs.register(MeAdministratorAPI, blueprint='administrator_api')

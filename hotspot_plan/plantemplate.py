@@ -100,7 +100,7 @@ class HotspotplantemplateAPI(MethodResource,  Resource):
 
             #Logging
             info_admin = info_administrator()
-            accessed = {'ip':request.remote_addr, 'id_token': info_admin['admin_id']}
+            accessed = {'ip':request.remote_addr, 'id_token': info_admin['request_id']}
             new_log = plantemplate_logging_create(accessed, str(data), data['id'], info_admin['admin_id'])
             if new_log == False:
                 print("Logging Failed")
@@ -179,7 +179,7 @@ class HotspotplantemplateAPI(MethodResource,  Resource):
                 data = get_plantemplate.get_data()
                 #Logging
                 info_admin = info_administrator()
-                accessed = {'ip':request.remote_addr, 'id_token': info_admin['admin_id']}
+                accessed = {'ip':request.remote_addr, 'id_token': info_admin['request_id']}
                 new_log = plantemplate_logging_update(accessed, str(data), data['id'], info_admin['admin_id'])
                 if new_log == False:
                     print("Logging Failed")

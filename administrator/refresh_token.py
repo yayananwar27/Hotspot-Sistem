@@ -6,7 +6,6 @@ from flask import jsonify, request
 
 from .models import admin_token, db_admin
 from config import redis_conn
-from helper import get_datetime
 from auth_token import create_token
 from .logging import authentication_logging_refreshtoken
 
@@ -30,6 +29,7 @@ class AdministratorRefreshToken(MethodResource, Resource):
     @marshal_with(RespAdministratorRefreshToken)
     def post(self, **kwargs):
         try:
+            from helper import get_datetime
             refresh_token = kwargs['refresh_token']
             #device = kwargs['device']
             device = request.headers.get('User-Agent')
@@ -52,7 +52,7 @@ class AdministratorRefreshToken(MethodResource, Resource):
             
             #ambil datetime dan generete tokennya
             dt_now = get_datetime()
-            _expaccess = int(dt_now.unix()+(60*60))
+            _expaccess = int(dt_now.unix()+(60*5))
             access_payload = {'admin_id' : result['admin_id'], 'type':'access_token', 'expired':_expaccess, 'device':device}
             access_token = create_token(access_payload)
             access_token = access_token.get_token()

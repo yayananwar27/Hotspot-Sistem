@@ -1,2 +1,3 @@
-administrator ID masih suka bentrok conflict ID
-cron_admin masih tidak multi workers
+administrator ID masih suka bentrok conflict ID(fix)
+cron_admin masih tidak multi workers(fix dengan uwsgi)
+datetime masih sering sama (fix ubah model)

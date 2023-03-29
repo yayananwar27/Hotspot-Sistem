@@ -1,7 +1,6 @@
 from config import scheduler, db
 from .models import admin_token, admin_token_old, db_admin
 from config import redis_conn
-from helper import get_datetime
 from flask_apispec.views import MethodResource
 from flask_restful import Resource
 from marshmallow import Schema, fields
@@ -58,6 +57,7 @@ class CheckExpiredTokenAPI(MethodResource, Resource):
     @use_kwargs(AdministratorSchemaCheckToken, location=('json'))
     def get(self, **kwargs):
         try:
+            from helper import get_datetime
             if request.remote_addr != '127.0.0.1':
                 return jsonify({"message": "Unauthorized"}), 401
             if kwargs['secret_keys'] != current_app.config['SECRET_KEY']:
