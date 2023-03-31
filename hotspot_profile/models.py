@@ -49,17 +49,17 @@ class radius_server(db_hs.Model):
 class template_hotspot_plan(db_hs.Model):
     __tablename__="template_hotspot_plan"
     id = db_hs.Column(db_hs.Integer, primary_key=True,  unique=True, autoincrement=True)
-    id_hotspot_prof = db_hs.Column(db_hs.Integer, db_hs.ForeignKey('hotspot_profile.id', ondelete='CASCADE'), nullable=False)
-    id_template_plan  = db_hs.Column(db_hs.String(255), db_hs.ForeignKey('plan_template.id', ondelete='CASCADE'), nullable=False)
+    id_hotspot_profile = db_hs.Column(db_hs.Integer, db_hs.ForeignKey('hotspot_profile.id', ondelete='CASCADE'), nullable=False)
+    id_plan_template  = db_hs.Column(db_hs.String(255), db_hs.ForeignKey('plan_template.id', ondelete='CASCADE'), nullable=False)
 
-    def __init__(self, id_hotspot_prof, id_template_plan):
-        self.id_hotspot_prof = id_hotspot_prof
-        self.id_template_plan = id_template_plan
+    def __init__(self, id_hotspot_profile, id_plan_template):
+        self.id_hotspot_profile = id_hotspot_profile
+        self.id_plan_template = id_plan_template
 
     def get_data(self):
         data = {
-            'id_hotspot_prof' : self.id_hotspot_prof,
-            'id_template_plan': self.id_template_plan
+            'id_hotspot_profile' : self.id_hotspot_profile,
+            'id_plan_template': self.id_plan_template
         }
         return data
         

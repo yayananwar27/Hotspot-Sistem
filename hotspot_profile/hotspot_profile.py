@@ -34,7 +34,7 @@ class HotspotprofileSchemaList(Schema):
     data = fields.List(fields.Nested(HotspotprofileSchema))
 
 class HotspotprofileSchemaCreate(Schema):
-    name = name = fields.String(required=True, metadata={"description":"Name Hotspot profile"})
+    name = fields.String(required=True, metadata={"description":"Name Hotspot profile"})
 
 class HotspotprofileSchemaDelete(Schema):
     id = fields.Integer(required=True, metadata={"description":"ID Hotspot profile"})
@@ -77,9 +77,9 @@ class HotspotprofileAPI(MethodResource,  Resource):
             db_hs.session.expire_all()
 
     @doc(description="List Hotspot profile", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
-    @marshal_with(HotspotprofileSchema)
+    @marshal_with(HotspotprofileSchemaList)
     @check_header
-    def post(self):
+    def get(self):
         try:
             hotspotprofile_list = []
             hotspotprofiles = hotspot_profile.query.order_by(hotspot_profile.name.asc()).all()
