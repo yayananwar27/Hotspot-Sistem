@@ -2,7 +2,7 @@ from flask import Flask
 from config import ApplicationConfig
 from flask_apispec.extension import FlaskApiSpec
 from flask_migrate import Migrate
-
+from flask_cors import CORS
 
 from administrator.models import db_admin, init_app as admin_init_app
 from administrator.api import administrator_api, init_docs as admin_init_docs
@@ -18,6 +18,7 @@ from hotspot_profile.api import hotspotprofile_api, init_docs as hs_init_docs
 from config import scheduler
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True, resources=r'*', origins="*", allow_headers=["Content-Type", "Authorization"], methods=['GET','POST','PUT','DELETE'])
 app.config.from_object(ApplicationConfig)
 
 # tambahkan ini untuk menggunakan Flask-Migrate

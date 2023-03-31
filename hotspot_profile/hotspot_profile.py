@@ -61,7 +61,7 @@ class HotspotprofileAPI(MethodResource,  Resource):
             #Logging
             info_admin = info_administrator()
             accessed = {'ip':request.remote_addr, 'id_token': info_admin['request_id']}
-            new_log = hotspotprofile_logging_create(accessed, str(data), data['id'], info_admin)
+            new_log = hotspotprofile_logging_create(accessed, str(data), data['id'], info_admin['admin_id'])
             if new_log == False:
                 print("Logging Failed")
 
@@ -119,7 +119,7 @@ class HotspotprofileAPI(MethodResource,  Resource):
                 #logging
                 info_admin = info_administrator()
                 accessed = {'ip':request.remote_addr, 'id_token': info_admin['request_id']}
-                new_log = hotspotprofile_logging_update(accessed, str(data), data['id'], info_admin)
+                new_log = hotspotprofile_logging_update(accessed, str(data), data['id'], info_admin['admin_id'])
                 if new_log == False:
                     print("Logging Failed")
 
@@ -152,7 +152,7 @@ class HotspotprofileAPI(MethodResource,  Resource):
                 #logging
                 info_admin = info_administrator()
                 accessed = {'ip':request.remote_addr, 'id_token': info_admin['request_id']}
-                new_log = hotspotprofile_logging_delete(accessed, str(old_data), old_data['id'], info_admin)
+                new_log = hotspotprofile_logging_delete(accessed, str(old_data), old_data['id'], info_admin['admin_id'])
                 if new_log == False:
                     print("Logging Failed")
 

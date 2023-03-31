@@ -9,7 +9,7 @@ from config import redis_conn
 from werkzeug.security import generate_password_hash
 from .models import db_admin, administrator, admin_token
 from .logging import administrator_logging_create, administrator_logging_update, administrator_logging_delete
-
+from secrets import token_hex
 import ast
 
 redcon = redis_conn()
@@ -39,6 +39,18 @@ def check_header(f):
         resp = make_response(f(*args, **kwargs))
         return resp
     return check_authorization
+def gen_administratorid():
+    id = str(token_hex(10))
+    i = False
+    while i == False:
+        id_exists = administrator.query.filter_by(id=id).first()
+        if id_exists is None:
+            i = True
+        else:
+            i = False
+            id = str(token_hex(10))
+    return id
+
 
 #Fungsi Info Administrator dari access_token
 def info_administrator():
@@ -104,9 +116,9 @@ class AdministratorAPI(MethodResource, Resource):
 
             if administrator_exists:
                 return jsonify({"message": "Administrator already exists"}), 409
-            
+            id = gen_administratorid
             hashed_password = generate_password_hash(password)
-            new_administrator = administrator(email, hashed_password, fullname, True)
+            new_administrator = administrator(id, email, hashed_password, fullname, True)
             db_admin.session.add(new_administrator)
             db_admin.session.commit()
 

@@ -29,7 +29,7 @@ def created_time():
 
 class administrator(db_admin.Model):
     __tablename__ = "administrator"
-    id = db_admin.Column(db_admin.String(255), primary_key=True, unique=True, default=get_uuid(8))
+    id = db_admin.Column(db_admin.String(255), primary_key=True, unique=True)
     email = db_admin.Column(db_admin.String(255), unique=True)
     password = db_admin.Column(db_admin.Text, nullable=False)
     fullname = db_admin.Column(db_admin.String(255))
@@ -39,7 +39,8 @@ class administrator(db_admin.Model):
     tokening = db_admin.relationship('admin_token', backref='administrator', cascade="all, delete", passive_deletes=True, lazy=True)
     tokening_old = db_admin.relationship('admin_token_old', backref='administrator', cascade="all, delete", passive_deletes=True, lazy=True)
 
-    def __init__(self, email, password, fullname, active):
+    def __init__(self, id, email, password, fullname, active):
+        self.id = id
         self.email = email
         self.password = password
         self.fullname = fullname

@@ -28,7 +28,7 @@ def check_header(f):
         return resp
     return check_authorization
 
-def id_plansite(id_site):
+def id_plansite():
     id = str(ambil_random(10))
     i = False
     while i == False:
@@ -37,7 +37,7 @@ def id_plansite(id_site):
             i = True
         else:
             i = False
-            id = str(ambil_random(8))
+            id = str(ambil_random(10))
     return id
 
 #plantype schema
