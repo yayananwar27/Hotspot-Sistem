@@ -8,7 +8,7 @@ from .plansite import HotspotplansiteAPI, InfoHotspotplansiteAPI
 
 
 hotspotplan_api = Blueprint('hotspotplan_api',__name__)
-CORS(hotspotplan_api, supports_credentials=True, resources=r'*', origins="*", allow_headers=["Content-Type", "Authorization"], methods=['GET','POST','PUT','DELETE'])
+CORS(hotspotplan_api, supports_credentials=True, resources=r'*', origins="*", allow_headers=["Content-Type", "Authorization", "Accept"], methods=['GET','POST','PUT','DELETE'])
 
 api = Api(hotspotplan_api)
 

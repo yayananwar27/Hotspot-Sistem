@@ -6,11 +6,11 @@ from .hotspot_profile import HotspotprofileAPI, InfoHotspotprofileAPI
 from .template import HotspotprofiletemplateAPI, InfoHotspotprofiletemplateAPI
 
 hotspotprofile_api = Blueprint('hotspotprofile_api',__name__)
-CORS(hotspotprofile_api, supports_credentials=True, resources=r'*', origins="*", allow_headers=["Content-Type", "Authorization"], methods=['GET','POST','PUT','DELETE'])
+CORS(hotspotprofile_api, supports_credentials=True, resources=r'*', origins="*", allow_headers=["Content-Type", "Authorization", "Accept"], methods=['GET','POST','PUT','DELETE'])
 
 api = Api(hotspotprofile_api)
 
-api.add_resource(HotspotprofileAPI, '/')
+api.add_resource(HotspotprofileAPI, '')
 api.add_resource(InfoHotspotprofileAPI, '/<id>')
 
 api.add_resource(HotspotprofiletemplateAPI, '/template')

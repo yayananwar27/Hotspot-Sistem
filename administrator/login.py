@@ -71,7 +71,7 @@ class LoginOperatorsAPI(MethodResource, Resource):
             #ambil datetime dan generete tokennya
             dt_now = get_datetime()
             #_expaccess = int(dt_now.unix()+(60*60))
-            _expaccess = int(dt_now.unix()+(60*5))
+            _expaccess = int(dt_now.unix()+(60*30))
             access_payload = {'admin_id' : administrator_exists.id, 'type':'access_token', 'expired':_expaccess, 'device':device}
             access_token = create_token(access_payload)
             access_token = access_token.get_token()

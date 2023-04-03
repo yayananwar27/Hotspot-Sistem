@@ -9,7 +9,7 @@ from .refresh_token import AdministratorRefreshToken
 from .cron_task import CheckExpiredTokenAPI
 
 administrator_api = Blueprint('administrator_api',__name__)
-CORS(administrator_api, supports_credentials=True, resources=r'*', origins="*", allow_headers=["Content-Type", "Authorization"], methods=['GET','POST','PUT','DELETE'])
+CORS(administrator_api, supports_credentials=True, resources=r'*', origins="*", allow_headers=["Content-Type", "Authorization", "Accept"], methods=['GET','POST','PUT','DELETE'])
 
 api = Api(administrator_api)
 

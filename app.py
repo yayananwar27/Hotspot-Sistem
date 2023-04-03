@@ -18,7 +18,7 @@ from hotspot_profile.api import hotspotprofile_api, init_docs as hs_init_docs
 from config import scheduler
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, resources=r'*', origins="*", allow_headers=["Content-Type", "Authorization"], methods=['GET','POST','PUT','DELETE'])
+CORS(app, supports_credentials=True, resources=r'*', origins="*", allow_headers=["Content-Type", "Authorization", "Accept"], methods=['GET','POST','PUT','DELETE'])
 app.config.from_object(ApplicationConfig)
 
 # tambahkan ini untuk menggunakan Flask-Migrate

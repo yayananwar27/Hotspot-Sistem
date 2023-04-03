@@ -116,7 +116,7 @@ class AdministratorAPI(MethodResource, Resource):
 
             if administrator_exists:
                 return jsonify({"message": "Administrator already exists"}), 409
-            id = gen_administratorid
+            id = gen_administratorid()
             hashed_password = generate_password_hash(password)
             new_administrator = administrator(id, email, hashed_password, fullname, True)
             db_admin.session.add(new_administrator)

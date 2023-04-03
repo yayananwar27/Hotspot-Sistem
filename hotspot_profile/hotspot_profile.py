@@ -44,7 +44,7 @@ class HotspotprofileAPI(MethodResource,  Resource):
     @doc(description="Create Hotspot profile", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(HotspotprofileSchemaCreate, location=('json'))
     @marshal_with(HotspotprofileSchema)
-    @check_header
+    #@check_header
     def post(self, **kwargs):
         try:
             name = kwargs['name']
@@ -78,7 +78,7 @@ class HotspotprofileAPI(MethodResource,  Resource):
 
     @doc(description="List Hotspot profile", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @marshal_with(HotspotprofileSchemaList)
-    @check_header
+    #@check_header
     def get(self):
         try:
             hotspotprofile_list = []
@@ -104,7 +104,7 @@ class HotspotprofileAPI(MethodResource,  Resource):
     @doc(description="Update Hotspot profile", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(HotspotprofileSchema, location=('json'))
     @marshal_with(HotspotprofileSchema)
-    @check_header
+    #@check_header
     def put(self, **kwargs):
         try:
             id = kwargs['id']
@@ -139,7 +139,7 @@ class HotspotprofileAPI(MethodResource,  Resource):
     @doc(description="Delete Hotspot profile", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(HotspotprofileSchemaDelete, location=('json'))
     @marshal_with(HotspotprofileSchema)
-    @check_header
+    #@check_header
     def delete(self, **kwargs):
         try:
             id = kwargs['id']
@@ -172,7 +172,7 @@ class HotspotprofileAPI(MethodResource,  Resource):
 class InfoHotspotprofileAPI(MethodResource,  Resource):
     @doc(description="Info Hotspot profile", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @marshal_with(HotspotprofileSchema)
-    @check_header
+    #@check_header
     def get(self, id):
         try:
             get_data = hotspot_profile.query.filter_by(id=id).first()
