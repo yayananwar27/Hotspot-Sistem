@@ -135,47 +135,47 @@ class HotspotprofiletemplateAPI(MethodResource, Resource):
         finally:
             db_hs.session.expire_all()
 
-    @doc(description="Update Hotspot profile template", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
-    @use_kwargs(HotspotplantemplateSchema, location=('json'))
-    @marshal_with(HotspotprofiletemplateSchemaInfo)
-    @check_header
-    def put(self, **kwargs):
-        try:
-            id = kwargs['id']
-            id_hotspot_profile = kwargs['id_hotspot_profile']
-            id_plan_template = kwargs['id_plan_template']
+    # @doc(description="Update Hotspot profile template", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
+    # @use_kwargs(HotspotplantemplateSchema, location=('json'))
+    # @marshal_with(HotspotprofiletemplateSchemaInfo)
+    # @check_header
+    # def put(self, **kwargs):
+    #     try:
+    #         id = kwargs['id']
+    #         id_hotspot_profile = kwargs['id_hotspot_profile']
+    #         id_plan_template = kwargs['id_plan_template']
 
-            get_profile_template = template_hotspot_plan.query.filter_by(id=id).first()
-            if get_profile_template:
-                get_profile_template.id_hotspot_profile = id_hotspot_profile
-                get_profile_template.id_plan_template = id_plan_template
-                db_hs.session.commit()
+    #         get_profile_template = template_hotspot_plan.query.filter_by(id=id).first()
+    #         if get_profile_template:
+    #             get_profile_template.id_hotspot_profile = id_hotspot_profile
+    #             get_profile_template.id_plan_template = id_plan_template
+    #             db_hs.session.commit()
                 
-                data = get_profile_template.get_data()
-                data_hotspot_profile = hotspot_profile.query.filter_by(id=data["id_hotspot_profile"]).first()
-                data['hotspot_profile'] = data_hotspot_profile.get_data()
-                data_plan_template = plan_template.query.filter_by(id=data["id_plan_template"]).first()
-                data['plan_template'] = data_plan_template.get_data()
+    #             data = get_profile_template.get_data()
+    #             data_hotspot_profile = hotspot_profile.query.filter_by(id=data["id_hotspot_profile"]).first()
+    #             data['hotspot_profile'] = data_hotspot_profile.get_data()
+    #             data_plan_template = plan_template.query.filter_by(id=data["id_plan_template"]).first()
+    #             data['plan_template'] = data_plan_template.get_data()
 
-                #Logging
-                info_admin = info_administrator()
-                accessed = {'ip':request.remote_addr, 'id_token': info_admin['request_id']}
-                new_log = hotspotprofiletemplate_logging_update(accessed, str(data), data['id'], info_admin['admin_id'])
-                if new_log == False:
-                    print("Logging Failed")
+    #             #Logging
+    #             info_admin = info_administrator()
+    #             accessed = {'ip':request.remote_addr, 'id_token': info_admin['request_id']}
+    #             new_log = hotspotprofiletemplate_logging_update(accessed, str(data), data['id'], info_admin['admin_id'])
+    #             if new_log == False:
+    #                 print("Logging Failed")
 
-                return jsonify(data)
+    #             return jsonify(data)
         
-            return jsonify({"message": "ID Not Found"}), 404
+    #         return jsonify({"message": "ID Not Found"}), 404
     
-        except Exception as e:
-            print(e)
-            error = {"message":e}
-            respone = jsonify(error)
-            respone.status_code = 500
-            return respone
-        finally:
-            db_hs.session.expire_all()   
+    #     except Exception as e:
+    #         print(e)
+    #         error = {"message":e}
+    #         respone = jsonify(error)
+    #         respone.status_code = 500
+    #         return respone
+    #     finally:
+    #         db_hs.session.expire_all()   
 
     @doc(description="Update Hotspot profile template", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(HotspotprofiletemplateSchemaDelete, location=('json'))
