@@ -6,12 +6,24 @@ from flask_restful import Resource
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from .models import db_admin, administrator, admin_token
-from auth_token import create_token
+from auth_token import create_token2
 from config import redis_conn
 
 from .logging import authentication_logging_login
 
 redcon = redis_conn()
+
+def regenerate_token():
+    token = str(create_token2(256))
+    i = False
+    while i == False:
+        token_exsists = admin_token.query.filter_by(token_value=token).first()
+        if token_exsists is None:
+            i = True
+        else:
+            i = False
+            token = str(create_token2(256))
+    return token
 
 #Bagian Mekanisme Login
 class AdministratorSchemaLogin(Schema):
@@ -73,20 +85,18 @@ class LoginOperatorsAPI(MethodResource, Resource):
             #_expaccess = int(dt_now.unix()+(60*60))
             _expaccess = int(dt_now.unix()+(60*30))
             access_payload = {'admin_id' : administrator_exists.id, 'type':'access_token', 'expired':_expaccess, 'device':device}
-            access_token = create_token(access_payload)
-            access_token = access_token.get_token()
+            access_token = regenerate_token()
             
             if remember == True:
                 _exprefresh = int(dt_now.unix()+(60*60*24*30))
                 refresh_payload = {'admin_id' : administrator_exists.id, 'type':'refresh_token', 'expired':_exprefresh, 'device':device}
-                refresh_token = create_token(refresh_payload)
-                refresh_token = refresh_token.get_token()
+                refresh_token = regenerate_token()
+                
             else:
                 _exprefresh = int(dt_now.unix()+(60*60*24))
                 #_exprefresh = int(dt_now.unix()+(60*10))
                 refresh_payload = {'admin_id' : administrator_exists.id, 'type':'refresh_token', 'expired':_exprefresh, 'device':device}
-                refresh_token = create_token(refresh_payload)
-                refresh_token = refresh_token.get_token()
+                refresh_token = regenerate_token()
 
             #Memasukkan access_token ke redis dan DB token
             redcon.set(str('admin_access_token:'+access_token), str(access_payload))

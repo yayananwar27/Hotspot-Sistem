@@ -65,7 +65,7 @@ class HotspotprofileradiusAPI(MethodResource, Resource):
             host = kwargs['host']
             profile_id = kwargs['id']
 
-            secret_key = ??
+            secret_key = ''
             port = 5000
             try:
                 port = kwargs['port']

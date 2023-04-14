@@ -6,12 +6,25 @@ from flask import jsonify, request
 
 from .models import admin_token, db_admin
 from config import redis_conn
-from auth_token import create_token
+from auth_token import create_token2
 from .logging import authentication_logging_refreshtoken
 
 import ast
 
 redcon = redis_conn()
+
+def regenerate_token():
+    token = str(create_token2(256))
+    i = False
+    while i == False:
+        token_exsists = admin_token.query.filter_by(token_value=token).first()
+        if token_exsists is None:
+            i = True
+        else:
+            i = False
+            token = str(create_token2(256))
+    return token
+
 
 #Bagian Mekanisme Refresh Access token
 class AdministratorSchemaRefreshToken(Schema):
@@ -54,9 +67,7 @@ class AdministratorRefreshToken(MethodResource, Resource):
             dt_now = get_datetime()
             _expaccess = int(dt_now.unix()+(60*5))
             access_payload = {'admin_id' : result['admin_id'], 'type':'access_token', 'expired':_expaccess, 'device':device}
-            access_token = create_token(access_payload)
-            access_token = access_token.get_token()
-
+            access_token = regenerate_token()
 
             #Memasukkan access_token ke redis dan DB token
             redcon.set(str('admin_access_token:'+access_token), str(access_payload))

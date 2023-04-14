@@ -1,8 +1,18 @@
 from flask import current_app
 from authlib.jose import jwt
 import secrets
+import random
+import string
 
-class create_token():
+class create_token2():
+    def __init__(self, panjang):
+        self.panjang = int(panjang)
+        self.karakter = string.ascii_letters+string.digits     
+    def __str__(self):
+        return ''.join(random.choices(self.karakter, k=self.panjang))
+
+
+class create_token_jwt():
     def __init__(self, payload):
         self.payload = payload
     
