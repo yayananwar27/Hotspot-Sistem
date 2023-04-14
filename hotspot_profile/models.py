@@ -58,6 +58,7 @@ class template_hotspot_plan(db_hs.Model):
 
     def get_data(self):
         data = {
+            'id' : self.id,
             'id_hotspot_profile' : self.id_hotspot_profile,
             'id_plan_template': self.id_plan_template
         }

@@ -109,7 +109,7 @@ class HotspotprofiletemplateAPI(MethodResource, Resource):
             hotspotprofiletemplate_list = []
             hotspotprofilestemplate = template_hotspot_plan.query.order_by(template_hotspot_plan.id.asc()).all()
             for _hotspotprofilestemplate in hotspotprofilestemplate:
-                info_hsprofile = hotspot_profile.query.filter_by(id=_hotspotprofilestemplate.id_hotspot_prof).first()
+                info_hsprofile = hotspot_profile.query.filter_by(id=_hotspotprofilestemplate.id_hotspot_profile).first()
                 data_hsprofile = info_hsprofile.get_data()
 
                 info_plantemplate = plan_template.query.filter_by(id=_hotspotprofilestemplate.id_plan_template).first()
@@ -221,7 +221,7 @@ class InfoHotspotprofiletemplateAPI(MethodResource, Resource):
         try:
             hotspotprofilestemplate = template_hotspot_plan.query.filter_by(id=id).first()
             if hotspotprofilestemplate:
-                info_hsprofile = hotspot_profile.query.filter_by(id=hotspotprofilestemplate.id_hotspot_prof).first()
+                info_hsprofile = hotspot_profile.query.filter_by(id=hotspotprofilestemplate.id_hotspot_profile).first()
                 data_hsprofile = info_hsprofile.get_data()
                 info_plantemplate = plan_template.query.filter_by(id=hotspotprofilestemplate.id_plan_template).first()
                 data_plantemplate = info_plantemplate.get_data() 
