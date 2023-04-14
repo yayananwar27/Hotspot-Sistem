@@ -13,7 +13,7 @@ CORS(hotspotplan_api, supports_credentials=True, resources=r'*', origins="*", al
 api = Api(hotspotplan_api)
 
 api.add_resource(HotspotplantypeAPI, '/plan_type')
-api.add_resource(InfoHotspotplantypeAPI, '/plant_type/<id>')
+api.add_resource(InfoHotspotplantypeAPI, '/plan_type/<id>')
 api.add_resource(HotspotplantemplateAPI, '/plan_template')
 api.add_resource(InfoHotspotplantemplateAPI, '/plan_template/<id>')
 api.add_resource(HotspotplansiteAPI, '/plan_site')

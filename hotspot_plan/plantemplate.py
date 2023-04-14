@@ -79,7 +79,7 @@ class HotspotplantemplateAPI(MethodResource,  Resource):
             name = kwargs['name']
             uptime = kwargs['uptime']
             kuota = kwargs['kuota']
-            expired = kwargs['expired']
+            _expired = kwargs['expired']
             price = kwargs['price']
             type_id = kwargs['type_id']
             limit_shared = kwargs['limit_shared']
@@ -92,7 +92,7 @@ class HotspotplantemplateAPI(MethodResource,  Resource):
             if name_exists:
                 return jsonify({"message": "Name already exists"}), 409
             id = id_plantemplate()
-            new_plan_template = plan_template(id, name, uptime, expired, price, kuota, type_id,limit_shared)
+            new_plan_template = plan_template(id, name, uptime, _expired, price, kuota, type_id,limit_shared)
             db_plan.session.add(new_plan_template)
             db_plan.session.commit()
 

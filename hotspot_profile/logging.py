@@ -35,3 +35,21 @@ def hotspotprofiletemplate_logging_delete(accessed, hotspotprofilecreate, refren
     db_admin.session.add(new_log)
     db_admin.session.commit()
     return True
+
+def hotspotprofileradiusserver_logging_create(accessed, hotspotprofilecreate, refrence_id, administrator_id):
+    new_log = admin_log(accessed, 'hotspot_profile_radius', 'create', hotspotprofilecreate, refrence_id, administrator_id)
+    db_admin.session.add(new_log)
+    db_admin.session.commit()
+    return True
+
+def hotspotprofileradiusserver_logging_update(accessed, hotspotprofilecreate, refrence_id, administrator_id):
+    new_log = admin_log(accessed, 'hotspot_profile_radius', 'update', hotspotprofilecreate, refrence_id, administrator_id)
+    db_admin.session.add(new_log)
+    db_admin.session.commit()
+    return True
+
+def hotspotprofileradiusserver_logging_delete(accessed, hotspotprofilecreate, refrence_id, administrator_id):
+    new_log = admin_log(accessed, 'hotspot_profile_radius', 'delete', hotspotprofilecreate, refrence_id, administrator_id)
+    db_admin.session.add(new_log)
+    db_admin.session.commit()
+    return True
