@@ -263,6 +263,7 @@ class ListInfoHotspotprofiletemplateAPI(MethodResource, Resource):
                     data_hsprofile = info_hsprofile.get_data()
                     info_plantemplate = plan_template.query.filter_by(id=_hotspotprofilestemplate.id_plan_template).first()
                     data_plantemplate = info_plantemplate.get_data() 
+                    data_plantemplate['id_registered'] = _hotspotprofilestemplate.id
                     list_template.append(data_plantemplate)
                 
                 info_profiletemplate = {
