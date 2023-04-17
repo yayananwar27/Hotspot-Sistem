@@ -41,9 +41,13 @@ class HotspotprofiletemplateSchemaInfo(Schema):
     id = fields.Integer(required=True, metadata={"description":"ID Hotspot profile template"})
     id_hotspot_profile = fields.Integer(required=True, metadata={"description":"ID Hotspot profile"})
     id_plan_template = fields.String(required=True, metadata={"description":"ID plan template"})
-    hotspot_profile = (fields.Nested(HotspotprofileSchema))
-    template_plan = (fields.Nested(HotspotplantemplateSchema))
+    hotspot_profile = fields.Nested(HotspotprofileSchema)
+    template_plan = fields.Nested(HotspotplantemplateSchema)
 
+class HotspotprofiletemplateSchemaInfoList(Schema):
+    hotspot_profile = fields.Nested(HotspotprofileSchema)
+    template_plan = fields.List(fields.Nested(HotspotplantemplateSchema))
+    
 class HotspotprofiletemplateSchemaList(Schema):
     data = fields.List(fields.Nested(HotspotprofiletemplateSchemaInfo))
 
@@ -177,7 +181,7 @@ class HotspotprofiletemplateAPI(MethodResource, Resource):
     #     finally:
     #         db_hs.session.expire_all()   
 
-    @doc(description="Update Hotspot profile template", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
+    @doc(description="Delete Hotspot profile template", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(HotspotprofiletemplateSchemaDelete, location=('json'))
     @marshal_with(HotspotprofiletemplateSchemaInfo)
     @check_header
@@ -215,7 +219,7 @@ class HotspotprofiletemplateAPI(MethodResource, Resource):
 
 class InfoHotspotprofiletemplateAPI(MethodResource, Resource):
     @doc(description="Info Hotspot profile template", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
-    @marshal_with(HotspotprofileSchema)
+    @marshal_with(HotspotprofiletemplateSchemaInfo)
     @check_header
     def get(self, id):
         try:
@@ -232,6 +236,38 @@ class InfoHotspotprofiletemplateAPI(MethodResource, Resource):
                     'id_plan_template' : hotspotprofilestemplate.id_plan_template,
                     'hotspot_profile':data_hsprofile,
                     'template_plan':data_plantemplate
+                }
+                return jsonify(info_profiletemplate)
+            return jsonify({"message": "Not Found"}), 404
+        
+        except Exception as e:
+            print(e)
+            error = {"message":e}
+            respone = jsonify(error)
+            respone.status_code = 500
+            return respone
+        finally:
+            db_hs.session.expire_all()
+
+class ListInfoHotspotprofiletemplateAPI(MethodResource, Resource):
+    @doc(description="List Info Hotspot profile template", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
+    @marshal_with(HotspotprofiletemplateSchemaInfoList)
+    @check_header
+    def get(self, id):
+        try:
+            hotspotprofilestemplate = template_hotspot_plan.query.filter_by(id_hotspot_profile=id).all()
+            list_template = []
+            if hotspotprofilestemplate:
+                for _hotspotprofilestemplate in hotspotprofilestemplate:
+                    info_hsprofile = hotspot_profile.query.filter_by(id=_hotspotprofilestemplate.id_hotspot_profile).first()
+                    data_hsprofile = info_hsprofile.get_data()
+                    info_plantemplate = plan_template.query.filter_by(id=_hotspotprofilestemplate.id_plan_template).first()
+                    data_plantemplate = info_plantemplate.get_data() 
+                    list_template.append(data_plantemplate)
+                
+                info_profiletemplate = {
+                        'hotspot_profile' : data_hsprofile,
+                        'template_plan' : list_template
                 }
                 return jsonify(info_profiletemplate)
             return jsonify({"message": "Not Found"}), 404
