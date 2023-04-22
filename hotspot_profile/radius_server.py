@@ -79,6 +79,10 @@ class HotspotprofileradiusSchemaList(Schema):
 class HotspotprofileradiusSchemaDelete(Schema):
     id = fields.Integer(required=True, metadata={"description":"ID Radius Server"})
 
+class HotspotprofileradiusSchemaSecretKeys(Schema):
+    id = fields.Integer(required=True, metadata={"description":"ID Radius Server"})
+    secret_key = fields.String(required=True, metadata={"description":"Secret keys for "})
+
 #CRUD
 class HotspotprofileradiusAPI(MethodResource, Resource):
     @doc(description="Create Hotspot profile Radius Server", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
@@ -198,7 +202,7 @@ class HotspotprofileradiusAPI(MethodResource, Resource):
         finally:
             db_hs.session.expire_all()   
 
-    @doc(description="Delete Hotspot profile", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
+    @doc(description="Delete Hotspot profile Radius Server", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(HotspotprofileradiusSchemaDelete, location=('json'))
     @marshal_with(HotspotprofileradiusSchemaInfo)
     @check_header
@@ -229,4 +233,6 @@ class HotspotprofileradiusAPI(MethodResource, Resource):
             respone.status_code = 500
             return respone
         finally:
-            db_hs.session.expire_all()   
+            db_hs.session.expire_all()
+
+      
