@@ -15,6 +15,9 @@ from hotspot_plan.api import hotspotplan_api, init_docs as plan_init_docs
 from hotspot_profile.models import db_hs, init_app as hs_init_app
 from hotspot_profile.api import hotspotprofile_api, init_docs as hs_init_docs
 
+#Hotspot Site Segement
+from site.models import db_site, init_app as site_init_app
+
 from config import scheduler
 
 app = Flask(__name__)
@@ -25,6 +28,7 @@ app.config.from_object(ApplicationConfig)
 migrate_administrator = Migrate(app, db_admin)
 migrate_hotspotplan = Migrate(app, db_plan)
 migrate_hotspotprofile = Migrate(app, db_hs)
+migrate_site = Migrate(app, db_site)
 
 #import yang di schedeluer
 from administrator.cron_task import expired_token_admin_check, init_cron_app
@@ -39,7 +43,7 @@ db.init_app(app)
 admin_init_app(app)
 plan_init_app(app)
 hs_init_app(app)
-
+site_init_app(app)
 
 with app.app_context():
     scheduler.start()
