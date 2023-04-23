@@ -236,3 +236,65 @@ class HotspotprofileradiusAPI(MethodResource, Resource):
             db_hs.session.expire_all()
 
       
+#show info hotspot profile radius server
+class InfoHotspotprofileradiusAPI(MethodResource, Resource):
+    @doc(description="Info Hotspot profile Radius Server", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
+    @marshal_with(HotspotprofileradiusSchemaInfo)
+    @check_header
+    def get(self, id):
+        try:
+            get_data = radius_server.query.filter_by(id=id).first()
+            if get_data:
+                data = get_data.get_data()
+                data_profile = hotspot_profile.query.filter_by(id=data['profile_id'])
+                data['profile_info'] = data_profile.get_data()
+                return jsonify(data)
+            return jsonify({"message": "Not Found"}), 404
+
+        except Exception as e:
+            print(e)
+            error = {"message":e}
+            respone = jsonify(error)
+            respone.status_code = 500
+            return respone
+        finally:
+            db_hs.session.expire_all()   
+
+#generate new secret key radius server
+class GenerateHotspotprofileradiusAPI(MethodResource, Resource):
+    @doc(description="Generate Secret Key Hotspot profile Radius Server", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
+    @marshal_with(HotspotprofileradiusSchemaSecretKeys)
+    @check_header
+    def get(self, id):
+        try:
+            get_data = radius_server.query.filter_by(id=id).first()
+            if get_data:
+                old_data = get_data.get_data()
+                new_secret_key = generate_secret()
+                get_data.secret_key = new_secret_key
+                db_hs.session.commit()
+                data = get_data.get_data()
+
+                #logging
+                info_admin = info_administrator()
+                accessed = {'ip':request.remote_addr, 'id_token': info_admin['request_id']}
+                new_log = hotspotprofileradiusserver_logging_update(accessed, str(data), data['id'], info_admin['admin_id'])
+                if new_log == False:
+                    print("Logging Failed")
+
+                return jsonify({
+                    'id':data['id'],
+                    'secret_key': data['secret_key']
+                })
+
+            
+            return jsonify({"message": "Not Found"}), 404
+
+        except Exception as e:
+            print(e)
+            error = {"message":e}
+            respone = jsonify(error)
+            respone.status_code = 500
+            return respone
+        finally:
+            db_hs.session.expire_all()   
