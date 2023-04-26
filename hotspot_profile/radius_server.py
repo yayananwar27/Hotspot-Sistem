@@ -92,7 +92,7 @@ class HotspotprofileradiusAPI(MethodResource, Resource):
     def post(self, **kwargs):
         try:
             host = kwargs['host']
-            profile_id = kwargs['id']
+            profile_id = kwargs['profile_id']
 
             port = 5000
             try:
