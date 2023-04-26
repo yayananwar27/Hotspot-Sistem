@@ -81,6 +81,7 @@ class plan_site(db_plan.Model):
     limit_shared = db_plan.Column(db_plan.Integer, nullable=False)
     template_id = db_plan.Column(db_plan.String(255), db_plan.ForeignKey('plan_template.id'), nullable=True)
     type_id = db_plan.Column(db_plan.Integer, db_plan.ForeignKey('plan_type.id'), nullable=False)
+    plan_siteing = db_plan.relationship('site_hotspot_plan', backref='plan_site', cascade="all, delete", passive_deletes=True, lazy=True)
 
     def __init__(self, id,name, uptime, expired, price, kuota, type_id, limit_shared=3):
         self.id = id

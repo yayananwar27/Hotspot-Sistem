@@ -16,7 +16,7 @@ from hotspot_profile.models import db_hs, init_app as hs_init_app
 from hotspot_profile.api import hotspotprofile_api, init_docs as hs_init_docs
 
 #Hotspot Site Segement
-from site.models import db_site, init_app as site_init_app
+from sites.models import db_site, init_app as site_init_app
 
 from config import scheduler
 

@@ -11,7 +11,7 @@ class hotspot_profile(db_hs.Model):
     name = db_hs.Column(db_hs.String(255), unique=True)
     radius_servering = db_hs.relationship('radius_server', backref='hotspot_profile', cascade="all, delete", passive_deletes=True, lazy=True)
     templating = db_hs.relationship('template_hotspot_plan', backref='hotspot_profile', cascade="all, delete", passive_deletes=True, lazy=True)
-    siteing = db_hs.relationship('site', backref=   'hotspot_profile', cascade="all, delete", passive_deletes=True, lazy=True)
+    siteing = db_hs.relationship('site', backref='hotspot_profile', cascade="all, delete", passive_deletes=True, lazy=True)
 
     def __init__(self, name):
         self.name = name

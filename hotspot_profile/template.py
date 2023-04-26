@@ -77,6 +77,11 @@ class HotspotprofiletemplateAPI(MethodResource, Resource):
             if id_plan_template_exists is None:
                 return jsonify({"message": "ID Plan Template Not Exists"}), 404
         
+            check_template_exists = template_hotspot_plan.query.filter_by(id_hotspot_profile=id_hotspot_profile, id_plan_template=id_plan_template).first()
+            if check_template_exists:
+                return jsonify({"message": "Template Already registered"}), 409
+
+
             new_template_hotspot_plan = template_hotspot_plan(id_hotspot_profile, id_plan_template)
             db_hs.session.add(new_template_hotspot_plan)
             db_hs.session.commit()
