@@ -133,7 +133,7 @@ class SiteAPI(MethodResource, Resource):
             respone.status_code = 500
             return respone
         finally:
-            db_hs.session.expire_all()
+            db_site.session.expire_all()
 
     @doc(description="Update Site", tags=['Hotspot Site'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(SiteSchema, location=('json'))
@@ -177,7 +177,7 @@ class SiteAPI(MethodResource, Resource):
             respone.status_code = 500
             return respone
         finally:
-            db_hs.session.expire_all()
+            db_site.session.expire_all()
 
     @doc(description="Delete Site", tags=['Hotspot Site'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @use_kwargs(SiteSchemaDelete, location=('json'))
@@ -210,4 +210,21 @@ class SiteAPI(MethodResource, Resource):
             respone.status_code = 500
             return respone
         finally:
-            db_hs.session.expire_all()
+            db_site.session.expire_all()   
+
+#Show info site 
+class InfoSiteAPI(MethodResource, Resource):
+    @doc(description="List Site", tags=['Hotspot Site'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
+    @marshal_with(SiteSchemaInfo)
+    @check_header
+    def get(self, id):
+        try:
+
+        except Exception as e:
+            print(e)
+            error = {"message":e}
+            respone = jsonify(error)
+            respone.status_code = 500
+            return respone
+        finally:
+            db_site.session.expire_all()

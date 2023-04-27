@@ -17,7 +17,7 @@ from hotspot_profile.api import hotspotprofile_api, init_docs as hs_init_docs
 
 #Hotspot Site Segement
 from sites.models import db_site, init_app as site_init_app
-
+from sites.api import site_api, init_docs as site_init_docs
 from config import scheduler
 
 app = Flask(__name__)
@@ -60,6 +60,10 @@ with app.app_context():
     #register Hostpot Profile
     app.register_blueprint(hotspotprofile_api, url_prefix='/hotspot_profile')
     hs_init_docs(docs)
+
+    #register site
+    app.register_blueprint(site_api, url_prefix='/site')
+    site_init_docs(docs)
 
 # fungsi untuk menghentikan scheduler
 def shutdown_scheduler():
