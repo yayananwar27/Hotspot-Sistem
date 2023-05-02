@@ -195,7 +195,7 @@ class SiteAPI(MethodResource, Resource):
                 #Logging
                 info_admin = info_administrator()
                 accessed = {'ip':request.remote_addr, 'id_token': info_admin['request_id']}
-                new_log = site_logging_update(accessed, str(old_data), old_data['id'], info_admin['admin_id'])
+                new_log = site_logging_delete(accessed, str(old_data), old_data['id'], info_admin['admin_id'])
                 if new_log == False:
                     print("Logging Failed")
 
@@ -214,11 +214,18 @@ class SiteAPI(MethodResource, Resource):
 
 #Show info site 
 class InfoSiteAPI(MethodResource, Resource):
-    @doc(description="List Site", tags=['Hotspot Site'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
+    @doc(description="Info Site", tags=['Hotspot Site'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @marshal_with(SiteSchemaInfo)
     @check_header
     def get(self, id):
         try:
+            get_data = site.query.filter_by(id=id).first()
+            if get_data:
+                data = get_data.get_data()
+                data_profile = hotspot_profile.query.filter_by(id=data['profile_id']).first()
+                data['profile_info'] = data_profile.get_data()
+                return jsonify(data)
+            return jsonify({"message": "Not Found"}), 404
 
         except Exception as e:
             print(e)

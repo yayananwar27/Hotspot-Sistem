@@ -71,7 +71,7 @@ class HotspotplansiteAPI(MethodResource,  Resource):
     @use_kwargs(HotspotplansiteSchemaCreate, location=('json'))
     @marshal_with(HotspotplansiteSchema)
     @check_header
-    #Create Plant Type
+    #Create Plant Site
     def post(self,**kwargs):
         try:
             name = kwargs['name']
@@ -118,7 +118,7 @@ class HotspotplansiteAPI(MethodResource,  Resource):
     @doc(description="List Hotspot Plan site", tags=['Hotspot Plan'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @marshal_with(HotspotplansiteSchemaList)
     @check_header
-    #Get list hotspot plant_type
+    #Get list hotspot plant_site
     def get(self):
         try:
             hotspotsite_list = []
@@ -152,7 +152,7 @@ class HotspotplansiteAPI(MethodResource,  Resource):
     @use_kwargs(HotspotplansiteSchema, location=('json'))
     @marshal_with(HotspotplansiteSchema)
     @check_header
-    #Update Plant Type
+    #Update Plant Site
     def put(self,**kwargs):
         try:
             id = kwargs['id']
@@ -200,7 +200,7 @@ class HotspotplansiteAPI(MethodResource,  Resource):
     @use_kwargs(HotspotplansiteSchemaDelete, location=('json'))
     @marshal_with(HotspotplansiteSchema)
     @check_header
-    #Delete Plant Type
+    #Delete Plant Site
     def delete(self, **kwargs):
         try:
             id = kwargs['id']
@@ -235,7 +235,7 @@ class InfoHotspotplansiteAPI(MethodResource, Resource):
     @doc(description="Info Hotspot Plan site", tags=['Hotspot Plan'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @marshal_with(HotspotplansiteSchema)
     @check_header
-    #Get hotspot plant_type
+    #Get hotspot plan_site
     def get(self, id):
         try:
             
