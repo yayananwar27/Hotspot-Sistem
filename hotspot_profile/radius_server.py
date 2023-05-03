@@ -158,7 +158,7 @@ class HotspotprofileradiusAPI(MethodResource, Resource):
             db_hs.session.expire_all()
 
     @doc(description="Update Hotspot profile Radius Server", tags=['Hotspot Profile'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
-    @use_kwargs(HotspotprofileradiusSchemaCreate, location=('json'))
+    @use_kwargs(HotspotprofileradiusSchemaUpdate, location=('json'))
     @marshal_with(HotspotprofileradiusSchemaInfo)
     @check_header
     def put(self, **kwargs):
@@ -174,6 +174,7 @@ class HotspotprofileradiusAPI(MethodResource, Resource):
                 db_hs.session.commit()
                 data_radius = get_radiusserver.get_data()
                 data_profile = hotspot_profile.query.filter_by(id=data_radius['profile_id']).first()
+                data_profile = data_profile.get_data()
                 data = {
                     'id': data_radius['id'],
                     'host': data_radius['host'],
