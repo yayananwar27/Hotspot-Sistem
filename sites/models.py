@@ -32,5 +32,5 @@ class site_landing_template(db_site.Model):
     id = db_site.Column(db_site.Integer, primary_key=True,  unique=True, autoincrement=True)
     id_site = db_site.Column(db_site.String(50), db_site.ForeignKey('site.id', ondelete='CASCADE'), nullable=False)
     
-
+###Belum Selesai
     
