@@ -247,7 +247,7 @@ class InfoHotspotprofileradiusAPI(MethodResource, Resource):
             get_data = radius_server.query.filter_by(id=id).first()
             if get_data:
                 data = get_data.get_data()
-                data_profile = hotspot_profile.query.filter_by(id=data['profile_id'])
+                data_profile = hotspot_profile.query.filter_by(id=data['profile_id']).first()
                 data['profile_info'] = data_profile.get_data()
                 return jsonify(data)
             return jsonify({"message": "Not Found"}), 404
