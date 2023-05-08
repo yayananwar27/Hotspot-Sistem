@@ -18,7 +18,7 @@ api.add_resource(HotspotplantemplateAPI, '/plan_template')
 api.add_resource(InfoHotspotplantemplateAPI, '/plan_template/<id>')
 api.add_resource(HotspotplansiteAPI, '/plan_site')
 api.add_resource(InfoHotspotplansiteAPI, '/plan_site/<id>')
-api.add_resource(CheckSyncPlanTemplateSite), '/@syncplantemplatesite'
+api.add_resource(CheckSyncPlanTemplateSite, '/@syncplantemplatesite')
 
 def init_docs(docs):
     #Add docs CRUD hotspot Plan Type
