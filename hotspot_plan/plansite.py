@@ -50,6 +50,7 @@ class HotspotplansiteSchema(Schema):
     kuota = fields.Integer(metadata={"description":"Total Kuota in Megabyte MB"})
     limit_shared = fields.Integer(metadata={"description":"Max simultaneous Use"})
     type_id = fields.Integer(metadata={"description":"ID Plan Type"})
+    site_id = fields.String(required=True, metadata={"description":"ID Site"})
 
 class HotspotplansiteSchemaCreate(Schema):
     name = fields.String(required=True, metadata={"description":"Name Plan Type"})
@@ -59,6 +60,7 @@ class HotspotplansiteSchemaCreate(Schema):
     kuota = fields.Integer(metadata={"description":"Total Kuota in Megabyte MB"})
     limit_shared = fields.Integer(metadata={"description":"Max simultaneous Use"})
     type_id = fields.Integer(metadata={"description":"ID Plan Type"})
+    site_id = fields.String(required=True, metadata={"description":"ID Site"})
 
 class HotspotplansiteSchemaDelete(Schema):
     id = fields.String(required=True, metadata={"description":"ID Plan Type"})
@@ -81,17 +83,18 @@ class HotspotplansiteAPI(MethodResource,  Resource):
             price = kwargs['price']
             type_id = kwargs['type_id']
             limit_shared = kwargs['limit_shared']
+            site_id = kwargs['site_id']
             
             type_id_exisis = plan_type.query.filter_by(id=type_id).first()
             if type_id_exisis is None:
                 return jsonify({"message":"type id not exists"})
 
-            name_exists = plan_site.query.filter_by(name=name).first()
-            if name_exists:
-                return jsonify({"message": "Name already exists"}), 409
+            #name_exists = plan_site.query.filter_by(name=name).first()
+            #if name_exists:
+            #    return jsonify({"message": "Name already exists"}), 409
             
             id = id_plansite()
-            new_plan_site = plan_site(id, name, uptime, expired, price, kuota, type_id, limit_shared)
+            new_plan_site = plan_site(id, name, uptime, expired, price, kuota, type_id, site_id,limit_shared)
             db_plan.session.add(new_plan_site)
             db_plan.session.commit()
 
@@ -132,7 +135,9 @@ class HotspotplansiteAPI(MethodResource,  Resource):
                     "expired":_hotspotsite.expired,
                     "kuota":_hotspotsite.kuota,
                     "limit_shared":_hotspotsite.limit_shared,
-                    "type_id": _hotspotsite.type_id
+                    "template_id":_hotspotsite.template_id,
+                    "type_id": _hotspotsite.type_id,
+                    "id_site": _hotspotsite.id_site
                 }
                 hotspotsite_list.append(__hotspotsite)
             
@@ -163,6 +168,7 @@ class HotspotplansiteAPI(MethodResource,  Resource):
             price = kwargs['price']
             type_id = kwargs['type_id']
             limit_shared = kwargs['limit_shared']
+            site_id = kwargs['site_id']
 
             get_plansite = plan_site.query.filter_by(id=id).first()
             if get_plansite:
@@ -173,6 +179,7 @@ class HotspotplansiteAPI(MethodResource,  Resource):
                 get_plansite.price = price
                 get_plansite.type_id = type_id
                 get_plansite.limit_shared = limit_shared
+                get_plansite.site_id = site_id
                 db_plan.session.commit()
             
                 data = get_plansite.get_data()

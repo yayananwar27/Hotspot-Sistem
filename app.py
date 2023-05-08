@@ -33,6 +33,8 @@ migrate_site = Migrate(app, db_site)
 #import yang di schedeluer
 from administrator.cron_task import expired_token_admin_check, init_cron_app
 init_cron_app(app)
+from hotspot_plan.sync_template_site import sync_plan_template_site
+
 #Init Scheduler
 #scheduler.init_app(app)
 

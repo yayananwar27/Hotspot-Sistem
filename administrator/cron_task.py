@@ -27,7 +27,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 def expired_token_admin_check():
     try:
         headers = {"Accept":"application/json","Content-Type": "application/json"}
-        url = f"http://127.0.0.1:5000/administrator/@checkexpiredtoken"
+        url = f"http://127.0.0.1:{os.environ['PORT']}/administrator/@checkexpiredtoken"
         body = {'secret_keys':"{}".format(os.environ["SECRET_KEY"])}
         _session = requests.Session()
 

@@ -88,9 +88,10 @@ class HotspotplantemplateAPI(MethodResource,  Resource):
             if type_id_exisis is None:
                 return jsonify({"message":"type id not exists"})
 
-            name_exists = plan_template.query.filter_by(name=name).first()
-            if name_exists:
-                return jsonify({"message": "Name already exists"}), 409
+            #name_exists = plan_template.query.filter_by(name=name).first()
+            #if name_exists:
+            #    return jsonify({"message": "Name already exists"}), 409
+            
             id = id_plantemplate()
             new_plan_template = plan_template(id, name, uptime, _expired, price, kuota, type_id,limit_shared)
             db_plan.session.add(new_plan_template)

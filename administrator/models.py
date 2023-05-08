@@ -132,7 +132,7 @@ class admin_log(db_admin.Model):
     description = db_admin.Column(db_admin.Text)
     timestamp = db_admin.Column(db_admin.DateTime, default=created_time())
     refrence_id = db_admin.Column(db_admin.String(255))
-    admin_id = db_admin.Column(db_admin.String(255), db_admin.ForeignKey('administrator.id', ondelete='CASCADE'), nullable=False)
+    admin_id = db_admin.Column(db_admin.String(255), db_admin.ForeignKey('administrator.id', ondelete='CASCADE'), nullable=True)
 
     def __init__(self, accessed, log_object, action, description, refrence_id, admin_id):
         self.accessed = accessed

@@ -37,7 +37,7 @@ class plan_type(db_plan.Model):
 class plan_template(db_plan.Model):
     __tablename__="plan_template"
     id = db_plan.Column(db_plan.String(255), primary_key=True, unique=True)
-    name = db_plan.Column(db_plan.String(255), unique=True)
+    name = db_plan.Column(db_plan.String(255), nullable=False)
     uptime = db_plan.Column(db_plan.Integer, nullable=False)
     expired = db_plan.Column(db_plan.Integer, nullable=False)
     price = db_plan.Column(db_plan.Integer, nullable=False)
@@ -73,7 +73,7 @@ class plan_template(db_plan.Model):
 class plan_site(db_plan.Model):
     __tablename__="plan_site"
     id = db_plan.Column(db_plan.String(255), primary_key=True, unique=True)
-    name = db_plan.Column(db_plan.String(255), unique=True)
+    name = db_plan.Column(db_plan.String(255), nullable=False)
     uptime = db_plan.Column(db_plan.Integer, nullable=False)
     expired = db_plan.Column(db_plan.Integer, nullable=False)
     price = db_plan.Column(db_plan.Integer, nullable=False)
@@ -82,9 +82,9 @@ class plan_site(db_plan.Model):
     template_id = db_plan.Column(db_plan.String(255), db_plan.ForeignKey('plan_template.id'), nullable=True)
     type_id = db_plan.Column(db_plan.Integer, db_plan.ForeignKey('plan_type.id'), nullable=False)
     id_site = db_plan.Column(db_plan.String(50), db_plan.ForeignKey('site.id', ondelete='CASCADE'), nullable=False)
-    plan_siteing = db_plan.relationship('site_hotspot_plan', backref='plan_site', cascade="all, delete", passive_deletes=True, lazy=True)
+    #plan_siteing = db_plan.relationship('site_hotspot_plan', backref='plan_site', cascade="all, delete", passive_deletes=True, lazy=True)
 
-    def __init__(self, id,name, uptime, expired, price, kuota, type_id, limit_shared=3):
+    def __init__(self, id,name, uptime, expired, price, kuota, type_id, id_site,limit_shared=3, template_id=None):
         self.id = id
         self.name = name
         self.uptime = uptime
@@ -93,6 +93,8 @@ class plan_site(db_plan.Model):
         self.kuota = kuota
         self.limit_shared = limit_shared
         self.type_id = type_id
+        self.id_site = id_site
+        self.template_id = template_id
 
     def get_data(self):
         data = {
@@ -103,6 +105,8 @@ class plan_site(db_plan.Model):
             "price":self.price,
             "kuota":self.kuota,
             "limit_shared":self.limit_shared,
-            "type_id":self.type_id 
+            "template_id":self.template_id,
+            "type_id":self.type_id,
+            "id_site":self.id_site
         }
         return data
