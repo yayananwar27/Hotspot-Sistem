@@ -30,7 +30,7 @@ def check_header(f):
     return check_authorization
 
 def generate_id_site():
-    id = str(ambil_random(8).lower())
+    id = str(ambil_random(8)).lower()
     i = False
     while i == False:
         id_exists = site.query.filter_by(id=id).first()
@@ -45,18 +45,24 @@ class SiteSchema(Schema):
     id = fields.String(required=True, metadata={"description":"ID Site"})
     name = fields.String(required=True, metadata={"description":"Name site"})
     landing_name = fields.String(required=True, metadata={"description":"penamaan judul pada landing page"})
+    latitude = fields.Float(required=True, metadata={"description":"Latitude Koordinat"})
+    longtitude = fields.Float(required=True, metadata={"description":"Latitude Koordinat"})
     profile_id = fields.Integer(required=True, metadata={"description":"ID Hostspot Profile"})
 
 class SiteSchemaInfo(Schema):
     id = fields.String(required=True, metadata={"description":"ID Site"})
     name = fields.String(required=True, metadata={"description":"Name site"})
     landing_name = fields.String(required=True, metadata={"description":"penamaan judul pada landing page"})
+    latitude = fields.Float(required=True, metadata={"description":"Latitude Koordinat"})
+    longtitude = fields.Float(required=True, metadata={"description":"Latitude Koordinat"})
     profile_id = fields.Integer(required=True, metadata={"description":"ID Hostspot Profile"})
     profile_info = fields.Nested(HotspotprofileSchema)
 
 class SiteSchemaCreate(Schema):
     name = fields.String(required=True, metadata={"description":"Name site"})
     landing_name = fields.String(required=True, metadata={"description":"penamaan judul pada landing page"})
+    latitude = fields.Float(required=True, metadata={"description":"Latitude Koordinat"})
+    longtitude = fields.Float(required=True, metadata={"description":"Latitude Koordinat"})
     profile_id = fields.Integer(required=True, metadata={"description":"ID Hostspot Profile"}) 
 
 class SiteSchemaList(Schema):
@@ -75,6 +81,8 @@ class SiteAPI(MethodResource, Resource):
         try:
             name = kwargs['name']
             landing_name = kwargs['landing_name']
+            latitude = kwargs['latitude']
+            longtitude = kwargs['longtitude']
             profile_id = kwargs['profile_id']
 
             get_nameexists = site.query.filter_by(name=name).first()
@@ -82,12 +90,12 @@ class SiteAPI(MethodResource, Resource):
                 return jsonify({"message": "Name already exists"}), 409
 
             id = generate_id_site()
-            new_site = site(id, name, landing_name, profile_id)
+            new_site = site(id, name, landing_name, latitude, longtitude, profile_id)
             db_site.session.add(new_site)
             db_site.session.commit()
             data = new_site.get_data()
 
-            data_profile = hotspot_profile.query.filter_by(id=data['profile_id'])
+            data_profile = hotspot_profile.query.filter_by(id=data['profile_id']).first()
             data['profile_info'] = data_profile.get_data()
 
             #Logging
@@ -145,6 +153,8 @@ class SiteAPI(MethodResource, Resource):
             name = kwargs['name']
             landing_name = kwargs['landing_name']
             profile_id = kwargs['profile_id']
+            latitude = kwargs['latitude']
+            longtitude = kwargs['longtitude']
 
             get_idexists = site.query.filter_by(id=id).first()
             if get_idexists:
@@ -155,6 +165,8 @@ class SiteAPI(MethodResource, Resource):
                 get_idexists.name = name
                 get_idexists.landing_name = landing_name
                 get_idexists.profile_id = profile_id
+                get_idexists.latitude = latitude
+                get_idexists.longtitude = longtitude
                 db_site.session.commit()
                 data = get_idexists.get_data()
                 
