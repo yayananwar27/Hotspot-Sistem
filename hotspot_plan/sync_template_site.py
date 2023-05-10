@@ -67,10 +67,10 @@ class CheckSyncPlanTemplateSite(MethodResource, Resource):
                         list_plan_st.append(_st_hotspot_plan.template_id)
                         list_plan_st_id.append({'id':_st_hotspot_plan.id, 'template_id':_st_hotspot_plan.template_id})
 
-                tmplt_hotspot_plan = template_hotspot_plan.query.filter_by(id_hostpot_profile=_list_site.profile_id).all()
+                tmplt_hotspot_plan = template_hotspot_plan.query.filter_by(id_hotspot_profile=_list_site.profile_id).all()
                 list_plan_tmplt = []
-                for _tmplt_hostpot_plan in tmplt_hotspot_plan:
-                    plan_tmplt = plan_template.query.filter_by(id=_tmplt_hostpot_plan.id_plan_template).first()
+                for _tmplt_hotspot_plan in tmplt_hotspot_plan:
+                    plan_tmplt = plan_template.query.filter_by(id=_tmplt_hotspot_plan.id_plan_template).first()
                     list_plan_tmplt.append(plan_tmplt.id)
 
                 deleting_plan = list(set(list_plan_st)-set(list_plan_tmplt))
