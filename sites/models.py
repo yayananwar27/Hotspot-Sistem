@@ -12,7 +12,7 @@ class site(db_site.Model):
     name = db_site.Column(db_site.String(255), unique=True)
     landing_name = db_site.Column(db_site.String(255), nullable=True)
     latitude = db_site.Column(db_site.Double)
-    longitude = db_site.Column(db_site.Double)
+    longtitude = db_site.Column(db_site.Double)
     profile_id = db_site.Column(db_site.Integer, db_site.ForeignKey('hotspot_profile.id', ondelete='CASCADE'), nullable=False)
     plan_siteing = db_site.relationship('plan_site', backref='site', cascade="all, delete", passive_deletes=True, lazy=True)
 
@@ -31,6 +31,7 @@ class site(db_site.Model):
             'landing_name': self.landing_name,
             'latitude': self.latitude,
             'longtitude': self.longtitude,
+            'position' : [self.latitude, self.longtitude],
             'profile_id' : self.profile_id
         }
         return data
