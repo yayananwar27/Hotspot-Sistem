@@ -6,7 +6,7 @@ from flask_restful import Resource
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from .models import db_admin, administrator, admin_token
-from auth_token import create_token2
+from auth_token import create_token2, create_token_jwt
 from config import redis_conn
 
 from .logging import authentication_logging_login
@@ -84,9 +84,11 @@ class LoginOperatorsAPI(MethodResource, Resource):
             dt_now = get_datetime()
             #_expaccess = int(dt_now.unix()+(60*60))
             _expaccess = int(dt_now.unix()+(60*30))
-            access_payload = {'admin_id' : administrator_exists.id, 'type':'access_token', 'expired':_expaccess, 'device':device}
-            access_token = regenerate_token()
-            
+            access_payload = {'admin_id' : administrator_exists.id, 'name': administrator_exists.email, 'type':'access_token', 'expired':_expaccess, 'device':device}
+            #access_token = regenerate_token()
+            access_token = create_token_jwt(access_payload)
+            access_token = access_token.get_token()
+
             if remember == True:
                 _exprefresh = int(dt_now.unix()+(60*60*24*30))
                 refresh_payload = {'admin_id' : administrator_exists.id, 'type':'refresh_token', 'expired':_exprefresh, 'device':device}

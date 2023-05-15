@@ -4,9 +4,9 @@ from flask_apispec import marshal_with, doc, use_kwargs
 from flask_restful import Resource
 from flask import jsonify, request
 
-from .models import admin_token, db_admin
+from .models import admin_token, administrator, db_admin
 from config import redis_conn
-from auth_token import create_token2
+from auth_token import create_token2, create_token_jwt
 from .logging import authentication_logging_refreshtoken
 
 import ast
@@ -62,12 +62,14 @@ class AdministratorRefreshToken(MethodResource, Resource):
                 return jsonify({"message": "Forbidden"}), 403
             request_id = admin_token.query.filter_by(token_value=refresh_token).first()
             result['request_id'] = request_id.request_id
-            
+            administrator_exists = administrator.query.filter_by(id=result['admin_id']).first()
             #ambil datetime dan generete tokennya
             dt_now = get_datetime()
             _expaccess = int(dt_now.unix()+(60*5))
-            access_payload = {'admin_id' : result['admin_id'], 'type':'access_token', 'expired':_expaccess, 'device':device}
-            access_token = regenerate_token()
+            access_payload = {'admin_id' : result['admin_id'], 'name': administrator_exists.email, 'type':'access_token', 'expired':_expaccess, 'device':device}
+            #access_token = regenerate_token()
+            access_token = create_token_jwt(access_payload)
+            access_token = access_token.get_token()
 
             #Memasukkan access_token ke redis dan DB token
             redcon.set(str('admin_access_token:'+access_token), str(access_payload))

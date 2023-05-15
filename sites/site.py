@@ -247,3 +247,29 @@ class InfoSiteAPI(MethodResource, Resource):
             return respone
         finally:
             db_site.session.expire_all()
+
+#Show list site by ID Profile
+class ListSiteprofile(MethodResource, Resource):
+    @doc(description="List Site BY ID profile", tags=['Hotspot Site'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
+    @marshal_with(SiteSchemaList)
+    def get(self, id):
+        try:
+            sites_list = []
+            sites = site.query.filter_by(profile_id=id).all()
+            for _sites in sites:
+                info_hsprofile = hotspot_profile.query.filter_by(id=_sites.profile_id).first()
+                data_hsprofile = info_hsprofile.get_data()
+                __sites = _sites.get_data()
+                __sites['profile_info'] = data_hsprofile
+                sites_list.append(__sites)
+
+            data = {'data':sites_list}
+            return jsonify(data)
+        except Exception as e:
+            print(e)
+            error = {"message":e}
+            respone = jsonify(error)
+            respone.status_code = 500
+            return respone
+        finally:
+            db_site.session.expire_all()
