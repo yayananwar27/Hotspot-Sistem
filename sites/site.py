@@ -12,6 +12,8 @@ redcon = redis_conn()
 
 from hotspot_profile.hotspot_profile import HotspotprofileSchema
 from hotspot_profile.models import hotspot_profile
+from hotspot_plan.plansite import HotspotplansiteSchemaList
+from hotspot_plan.models import plan_site
 
 from .models import db_site, site
 from .logging import site_logging_create, site_logging_update, site_logging_delete
@@ -170,7 +172,7 @@ class SiteAPI(MethodResource, Resource):
                 db_site.session.commit()
                 data = get_idexists.get_data()
                 
-                data_profile = hotspot_profile.query.filter_by(id=data['profile_id'])
+                data_profile = hotspot_profile.query.filter_by(id=data['profile_id']).first()
                 data['profile_info'] = data_profile.get_data()
 
                 #Logging
@@ -252,6 +254,7 @@ class InfoSiteAPI(MethodResource, Resource):
 class ListSiteprofile(MethodResource, Resource):
     @doc(description="List Site BY ID profile", tags=['Hotspot Site'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
     @marshal_with(SiteSchemaList)
+    @check_header
     def get(self, id):
         try:
             sites_list = []
@@ -265,6 +268,30 @@ class ListSiteprofile(MethodResource, Resource):
 
             data = {'data':sites_list}
             return jsonify(data)
+        except Exception as e:
+            print(e)
+            error = {"message":e}
+            respone = jsonify(error)
+            respone.status_code = 500
+            return respone
+        finally:
+            db_site.session.expire_all()
+
+#Show list plan site by ID site
+class ListSiteplan(MethodResource, Resource):
+    @doc(description="List Site plan BY ID site", tags=['Hotspot Site'], params={'Authorization': {'in': 'header', 'description': 'An access token'}})
+    @marshal_with(HotspotplansiteSchemaList)
+    @check_header
+    #Get hotspot plan_site
+    def get(self, id):
+        try:
+            
+            plansites = plan_site.query.filter_by(id=id).first()
+            if plansites:
+                data = plansites.get_data()
+                return jsonify(data)
+            
+            return jsonify({"message": "Not Found"}), 404
         except Exception as e:
             print(e)
             error = {"message":e}

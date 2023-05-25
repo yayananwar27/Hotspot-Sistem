@@ -56,6 +56,7 @@ class CheckSyncPlanTemplateSite(MethodResource, Resource):
             if kwargs['secret_keys'] != current_app.config['SECRET_KEY']:
                 return jsonify({"message": "Unauthorized"}), 401
             
+            #UPDATE SYNC ada data dan deleted
             list_site = site.query.order_by(site.profile_id.asc()).all()
             
             for _list_site in list_site:
@@ -111,6 +112,41 @@ class CheckSyncPlanTemplateSite(MethodResource, Resource):
                     new_log = plansite_logging_create(accessed, str(data), data['id'], None)
                     if new_log == False:
                         print("Logging Failed")
+
+            #UPDATE SYNC data
+            st_hotspot_plan = plan_site.query.ordey_by(plan_site.id_site.asc()).all()
+            for _st_hotspot_plan in st_hotspot_plan:
+                if _st_hotspot_plan.template_id != None:
+                    dt_plan_site = {
+                        "name":_st_hotspot_plan.name,
+                        "uptime":_st_hotspot_plan.uptime,
+                        "expired":_st_hotspot_plan.expired,
+                        "price":_st_hotspot_plan.price,
+                        "kuota":_st_hotspot_plan.kuota,
+                        "limit_shared":_st_hotspot_plan.limit_shared,
+                        "type_id":_st_hotspot_plan.type_id
+                    }
+
+                    pln_tmplt = plan_template.query.filter_by(id=_st_hotspot_plan.template_id).first()
+                    dt_plan_tmplt = {
+                        "name" :pln_tmplt.name,
+                        "uptime" :pln_tmplt.uptime, 
+                        "expired":pln_tmplt.expired,
+                        "price":pln_tmplt.price,
+                        "kouta":pln_tmplt.kouta,
+                        "limit_shared":pln_tmplt.limit_shared,
+                        "type_id":pln_tmplt.type_id
+                    }
+
+                    if dt_plan_site != dt_plan_tmplt:
+                        _st_hotspot_plan.name = pln_tmplt.name
+                        _st_hotspot_plan.uptime = pln_tmplt.uptime
+                        _st_hotspot_plan.expired = pln_tmplt.expired
+                        _st_hotspot_plan.price = pln_tmplt.price
+                        _st_hotspot_plan.kuota = pln_tmplt.kuota
+                        _st_hotspot_plan.limit_shared = pln_tmplt.limit_Shared
+                        _st_hotspot_plan.type_id = pln_tmplt.type_id
+                        db_plan.session.commit()
 
             error = {"message":"success"}
             respone = jsonify(error)
