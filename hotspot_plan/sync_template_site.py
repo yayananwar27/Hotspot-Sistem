@@ -114,7 +114,7 @@ class CheckSyncPlanTemplateSite(MethodResource, Resource):
                         print("Logging Failed")
 
             #UPDATE SYNC data
-            st_hotspot_plan = plan_site.query.ordey_by(plan_site.id_site.asc()).all()
+            st_hotspot_plan = plan_site.query.order_by(plan_site.id_site.asc()).all()
             for _st_hotspot_plan in st_hotspot_plan:
                 if _st_hotspot_plan.template_id != None:
                     dt_plan_site = {

@@ -162,7 +162,8 @@ class SiteAPI(MethodResource, Resource):
             if get_idexists:
                 get_nameexists = site.query.filter_by(name=name).first()
                 if get_nameexists:
-                    return jsonify({"message": "Name already exists"}), 409
+                    if get_nameexists.id != id:
+                        return jsonify({"message": "Name already exists"}), 409
 
                 get_idexists.name = name
                 get_idexists.landing_name = landing_name
