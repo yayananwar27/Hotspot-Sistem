@@ -285,10 +285,12 @@ class ListSiteplan(MethodResource, Resource):
     #Get hotspot plan_site
     def get(self, id):
         try:
-            
-            plansites = plan_site.query.filter_by(id=id).first()
+            data = []
+            plansites = plan_site.query.filter_by(id_site=id).all()
             if plansites:
-                data = plansites.get_data()
+                for _plansites in plansites:
+                    data.append(_plansites.get_data())
+                
                 return jsonify(data)
             
             return jsonify({"message": "Not Found"}), 404
