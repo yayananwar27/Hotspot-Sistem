@@ -133,18 +133,18 @@ class CheckSyncPlanTemplateSite(MethodResource, Resource):
                         "uptime" :pln_tmplt.uptime, 
                         "expired":pln_tmplt.expired,
                         "price":pln_tmplt.price,
-                        "kouta":pln_tmplt.kouta,
+                        "kouta":pln_tmplt.kuota,
                         "limit_shared":pln_tmplt.limit_shared,
                         "type_id":pln_tmplt.type_id
                     }
-
+                    
                     if dt_plan_site != dt_plan_tmplt:
                         _st_hotspot_plan.name = pln_tmplt.name
                         _st_hotspot_plan.uptime = pln_tmplt.uptime
                         _st_hotspot_plan.expired = pln_tmplt.expired
                         _st_hotspot_plan.price = pln_tmplt.price
                         _st_hotspot_plan.kuota = pln_tmplt.kuota
-                        _st_hotspot_plan.limit_shared = pln_tmplt.limit_Shared
+                        _st_hotspot_plan.limit_shared = pln_tmplt.limit_shared
                         _st_hotspot_plan.type_id = pln_tmplt.type_id
                         db_plan.session.commit()
 
